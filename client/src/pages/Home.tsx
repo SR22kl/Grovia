@@ -2,6 +2,7 @@ import BrowseCategories from "../components/Home/BrowseCategories";
 import Features from "../components/Home/Features";
 import Hero from "../components/Home/Hero";
 import PopProducts from "../components/Home/PopProducts";
+import PromoBanner from "../components/Home/PromoBanner";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
         <Features />
         <BrowseCategories />
         <PopProducts />
+        <PromoBanner />
       </div>
     </>
   );
