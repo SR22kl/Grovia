@@ -1,6 +1,7 @@
 import BrowseCategories from "../components/Home/BrowseCategories";
 import Features from "../components/Home/Features";
 import Hero from "../components/Home/Hero";
+import NewsLetter from "../components/Home/NewsLetter";
 import PopProducts from "../components/Home/PopProducts";
 import PromoBanner from "../components/Home/PromoBanner";
 
@@ -13,6 +14,7 @@ const Home = () => {
         <BrowseCategories />
         <PopProducts />
         <PromoBanner />
+        <NewsLetter />
       </div>
     </>
   );
