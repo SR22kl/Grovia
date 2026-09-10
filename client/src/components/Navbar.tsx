@@ -156,6 +156,7 @@ const Navbar = () => {
                 <ShoppingCartIcon className="size-6 text-zinc-900" />
                 {cartCount > 0 && (
                   <span className="absolute top-0 right-1 text-[11px] bg-app-orange text-white size-4 flex-center rounded-full">
+                    {/* {items.length} {items.length === 1 ? "item" : "items"} */}
                     {cartCount}
                   </span>
                 )}
