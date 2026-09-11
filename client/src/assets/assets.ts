@@ -139,7 +139,7 @@ export const dummyProducts = [
     unit: "100g",
     stock: 100,
     isOrganic: false,
-    rating: 4.5,
+    rating: 4,
     reviewCount: 12,
     __v: 0,
     createdAt: "2026-03-24T05:50:11.118Z",
