@@ -66,9 +66,9 @@ const Addresses = () => {
 
       <div className="pointer-events-none absolute -left-32 -top-32 size-96 rounded-full bg-emerald-400/20 blur-3xl" />
 
-      <div className="pointer-events-none absolute right-[-8rem] top-1/4 size-125 rounded-full bg-lime-300/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 top-1/4 size-125 rounded-full bg-lime-300/10 blur-3xl" />
 
-      <div className="pointer-events-none absolute bottom-[-10rem] left-1/3 size-125 rounded-full bg-teal-300/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 left-1/3 size-125 rounded-full bg-teal-300/10 blur-3xl" />
 
       {/* Decorative grid */}
       <div

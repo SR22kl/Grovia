@@ -19,34 +19,71 @@ const AddressCard = ({
   return (
     <div
       className="
-        group relative h-full overflow-hidden
+        group relative isolate h-full overflow-hidden
         rounded-3xl
+
         border border-white/15
         bg-white/10
+
         p-5 sm:p-6
-        shadow-lg shadow-black/10
+
         backdrop-blur-xl
-        transition-all duration-300 ease-out
+
+        shadow-[0_8px_25px_rgba(0,0,0,0.08)]
+
+        transition-all
+        duration-500
+        ease-[cubic-bezier(0.22,1,0.36,1)]
+
         hover:-translate-y-1
-        hover:border-white/25
-        hover:bg-white/15
-        hover:shadow-2xl hover:shadow-black/20
+        hover:border-emerald-300/35
+        hover:bg-white/13
+        hover:shadow-[inset_0_0_35px_rgba(52,211,153,0.10),0_8px_25px_rgba(0,0,0,0.08)]
       "
     >
       {/* =========================================================
-          CARD AMBIENT GLOW
+          INNER HOVER GLOW
+          IMPORTANT:
+          This uses an inset glow, so it can NEVER bleed into
+          the neighboring address card.
       ========================================================= */}
 
       <div
         className="
-          pointer-events-none absolute
-          -right-16 -top-16
-          size-40
-          rounded-full
-          bg-emerald-300/10
-          blur-3xl
-          transition-all duration-500
-          group-hover:bg-emerald-300/20
+          pointer-events-none absolute inset-0
+          rounded-3xl
+
+          bg-[radial-gradient(circle_at_85%_15%,rgba(52,211,153,0.16),transparent_42%)]
+
+          opacity-0
+          transition-opacity
+          duration-500
+          ease-out
+
+          group-hover:opacity-100
+        "
+      />
+
+      {/* =========================================================
+          SUBTLE BOTTOM GLOW
+          Also completely clipped by the card.
+      ========================================================= */}
+
+      <div
+        className="
+          pointer-events-none absolute inset-x-0 bottom-0
+          h-24
+
+          bg-linear-to-t
+          from-emerald-400/8
+          to-transparent
+
+          opacity-0
+          transition-opacity
+          duration-500
+          ease-out
+
+          group-hover:opacity-100
         "
       />
 
@@ -56,17 +93,30 @@ const AddressCard = ({
 
       <div
         className="
-          pointer-events-none absolute inset-0
-          translate-x-[-120%]
-          skew-x-[-15deg]
+          pointer-events-none absolute inset-y-0 left-[-120%]
+          w-[70%]
+
+          skew-x-[-18deg]
+
           bg-linear-to-r
           from-transparent
-          via-white/10
+          via-white/8
           to-transparent
-          transition-transform duration-700
-          group-hover:translate-x-[120%]
+
+          opacity-0
+
+          transition-[left,opacity]
+          duration-700
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+
+          group-hover:left-[150%]
+          group-hover:opacity-100
         "
       />
+
+      {/* =========================================================
+          CONTENT
+      ========================================================= */}
 
       <div className="relative z-10">
         {/* =======================================================
@@ -79,18 +129,13 @@ const AddressCard = ({
             {/* Icon */}
             <div
               className="
-                flex size-12 shrink-0 items-center justify-center
-                rounded-2xl
-                border border-white/20
-                bg-linear-to-br
-                from-emerald-400
-                via-emerald-500
-                to-app-green
-                text-white
-                shadow-lg shadow-emerald-950/20
-                transition-all duration-300
-                group-hover:scale-105
-                group-hover:shadow-emerald-400/20
+               flex size-12 shrink-0 items-center justify-center 
+               rounded-2xl 
+               border border-white/20 
+               bg-linear-to-br from-emerald-400 via-emerald-500 to-app-green
+               text-white shadow-lg shadow-emerald-950/20 
+               transition-all duration-300 group-hover:scale-105 
+               group-hover:shadow-emerald-400/20
               "
             >
               <MapPinIcon className="size-5" strokeWidth={2.3} />
@@ -106,12 +151,21 @@ const AddressCard = ({
                 {addr.isDefault && (
                   <span
                     className="
-                      inline-flex shrink-0 items-center gap-1
+                      inline-flex shrink-0
+                      items-center gap-1
+
                       rounded-full
+
                       border border-orange-300/30
                       bg-orange-400/15
+
                       px-2.5 py-1
-                      text-[10px] font-bold uppercase tracking-wide
+
+                      text-[10px]
+                      font-bold
+                      uppercase
+                      tracking-wide
+
                       text-orange-200
                     "
                   >
@@ -127,22 +181,35 @@ const AddressCard = ({
             </div>
           </div>
 
-          {/* Actions */}
+          {/* =====================================================
+              ACTION BUTTONS
+          ===================================================== */}
+
           <div className="flex shrink-0 items-center gap-1">
             <button
               onClick={() => onEditHandler(addr)}
               aria-label={`Edit ${addr.label} address`}
               className="
-                flex size-9 items-center justify-center
+                flex size-9
+                items-center justify-center
+
                 rounded-xl
+
                 border border-white/10
                 bg-white/5
+
                 text-emerald-100/60
-                transition-all duration-200
+
+                transition-[background-color,border-color,color,transform]
+                duration-300
+                ease-out
+
                 hover:border-emerald-300/20
                 hover:bg-emerald-400/15
                 hover:text-emerald-200
-                hover:shadow-md
+                hover:scale-105
+
+                active:scale-95
               "
             >
               <PencilIcon className="size-4" />
@@ -152,16 +219,26 @@ const AddressCard = ({
               onClick={() => handleDelete(addr._id)}
               aria-label={`Delete ${addr.label} address`}
               className="
-                flex size-9 items-center justify-center
+                flex size-9
+                items-center justify-center
+
                 rounded-xl
+
                 border border-white/10
                 bg-white/5
+
                 text-emerald-100/60
-                transition-all duration-200
+
+                transition-[background-color,border-color,color,transform]
+                duration-300
+                ease-out
+
                 hover:border-red-300/20
                 hover:bg-red-400/15
                 hover:text-red-300
-                hover:shadow-md
+                hover:scale-105
+
+                active:scale-95
               "
             >
               <Trash2Icon className="size-4" />
@@ -175,12 +252,21 @@ const AddressCard = ({
 
         <div
           className="
+            relative
+
             mt-5
+
             rounded-2xl
+
             border border-white/10
             bg-black/5
+
             p-4
-            transition-all duration-300
+
+            transition-[background-color,border-color]
+            duration-500
+            ease-out
+
             group-hover:border-white/15
             group-hover:bg-black/10
           "
@@ -188,9 +274,19 @@ const AddressCard = ({
           <div className="flex items-start gap-3">
             <div
               className="
-                mt-0.5 flex size-8 shrink-0 items-center justify-center
+                mt-0.5
+
+                flex size-8 shrink-0
+                items-center justify-center
+
                 rounded-lg
+
                 bg-white/10
+
+                transition-colors
+                duration-300
+
+                group-hover:bg-emerald-300/10
               "
             >
               <MapPinIcon className="size-4 text-emerald-200" />
@@ -213,7 +309,21 @@ const AddressCard = ({
         ======================================================= */}
 
         <div className="mt-4 flex items-center gap-2">
-          <span className="size-1.5 rounded-full bg-emerald-300 shadow-sm shadow-emerald-300/50" />
+          <span
+            className="
+              size-1.5
+              rounded-full
+              bg-emerald-300
+
+              shadow-sm
+              shadow-emerald-300/50
+
+              transition-transform
+              duration-300
+
+              group-hover:scale-125
+            "
+          />
 
           <span className="text-[11px] font-medium text-emerald-100/45">
             Delivery location saved
