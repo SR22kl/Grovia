@@ -41,13 +41,6 @@ const AddressCard = ({
         hover:shadow-[inset_0_0_35px_rgba(52,211,153,0.10),0_8px_25px_rgba(0,0,0,0.08)]
       "
     >
-      {/* =========================================================
-          INNER HOVER GLOW
-          IMPORTANT:
-          This uses an inset glow, so it can NEVER bleed into
-          the neighboring address card.
-      ========================================================= */}
-
       <div
         className="
           pointer-events-none absolute inset-0
@@ -63,11 +56,6 @@ const AddressCard = ({
           group-hover:opacity-100
         "
       />
-
-      {/* =========================================================
-          SUBTLE BOTTOM GLOW
-          Also completely clipped by the card.
-      ========================================================= */}
 
       <div
         className="
