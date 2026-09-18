@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types";
 import { dummyProducts } from "../assets/assets";
-import { Zap, Sparkles } from "lucide-react";
+import { Zap, Sparkles, Clock3 } from "lucide-react";
 import Loading from "../components/Loading";
 import ProductCard from "../components/ProductCard";
+import Navbar from "../components/Navbar";
 
 const FlashDeals = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -20,144 +21,697 @@ const FlashDeals = () => {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-hidden bg-app-cream">
-      {/* Banner */}
-      <section className="relative isolate overflow-hidden bg-linear-to-br from-orange-600 via-app-orange to-amber-400 py-6 sm:py-8 lg:py-10">
-        {/* Background Glow */}
-        <div className="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-yellow-300/30 blur-3xl animate-pulse" />
+    <main className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
+      {/* =========================================================
+          LIQUID GLASS BACKGROUND
+      ========================================================= */}
 
-        <div className="pointer-events-none absolute -bottom-32 -right-20 size-96 rounded-full bg-red-500/30 blur-3xl animate-pulse" />
+      {/* Top-left emerald glow */}
+      <div
+        className="
+          pointer-events-none absolute
+          -left-40 -top-40
+          size-105
+          rounded-full
+          bg-emerald-400/15
+          blur-[120px]
+          animate-[liquidFloat_12s_ease-in-out_infinite]
+        "
+      />
 
-        {/* Floating decorative circles */}
-        <div className="pointer-events-none absolute left-[12%] top-[25%] size-3 rounded-full bg-yellow-200/80 animate-bounce" />
+      <div
+        className="
+          pointer-events-none absolute
+          -left-40 top-240
+          size-105
+          rounded-full
+          bg-emerald-400/30
+          blur-[120px]
+          animate-[liquidFloat_12s_ease-in-out_infinite]
+        "
+      />
 
-        <div className="pointer-events-none absolute right-[15%] top-[30%] size-2 rounded-full bg-white/80 animate-ping" />
+      {/* Top-right orange glow */}
+      <div
+        className="
+          pointer-events-none absolute
+          -right-40 top-[18%]
+          size-95
+          rounded-full
+          bg-orange-400/20
+          blur-[120px]
+          animate-[liquidFloatReverse_15s_ease-in-out_infinite]
+        "
+      />
+      
+      <div
+        className="
+          pointer-events-none absolute
+          -right-20 top-480
+          size-95
+          rounded-full
+          bg-orange-400/20
+          blur-[120px]
+          animate-[liquidFloatReverse_15s_ease-in-out_infinite]
+        "
+      />
 
-        <div className="pointer-events-none absolute bottom-[20%] left-[20%] size-2 rounded-full bg-white/60 animate-pulse" />
+      {/* Center emerald glow */}
+      <div
+        className="
+          pointer-events-none absolute
+          left-[38%] top-[45%]
+          size-80
+          rounded-full
+          bg-emerald-500/50
+          blur-[130px]
+          animate-[liquidPulse_11s_ease-in-out_infinite]
+        "
+      />
+      <div
+        className="
+          pointer-events-none absolute
+          left-[48%] top-600
+          size-80
+          rounded-full
+          bg-emerald-500/50
+          blur-[130px]
+          animate-[liquidPulse_11s_ease-in-out_infinite]
+        "
+      />
 
-        {/* Main content */}
-        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          {/* Top badge */}
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white shadow-lg backdrop-blur-xl">
-            <Sparkles className="size-4 animate-pulse" />
-            Limited Time Offers
-            <Sparkles className="size-4 animate-pulse" />
+      {/* Bottom orange glow */}
+      <div
+        className="
+          pointer-events-none absolute
+          -bottom-48 -left-20
+          size-95
+          rounded-full
+          bg-orange-400/60
+          blur-[130px]
+          animate-[liquidFloat_14s_ease-in-out_infinite]
+        "
+      />
+
+      {/* =========================================================
+          SUBTLE GLASS GRID
+      ========================================================= */}
+
+      <div
+        className="
+          pointer-events-none absolute inset-0
+          opacity-[0.035]
+          [background-image:linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)]
+          [background-size:72px_72px]
+        "
+      />
+
+      {/* Top gloss */}
+      <div
+        className="
+          pointer-events-none absolute inset-x-0 top-0
+          h-105
+          bg-[radial-gradient(ellipse_at_top,rgba(52,211,153,0.07),transparent_65%)]
+        "
+      />
+
+      {/* =========================================================
+          CONTENT
+      ========================================================= */}
+
+      {/* Navbar */}
+      <section className="animate-[pageReveal_.5s_cubic-bezier(.16,1,.3,1)] mt-8">
+        <Navbar />
+      </section>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        {/* FLASH DEALS HERO */}
+
+        <section
+          className="
+            group relative isolate mt-6
+            overflow-hidden
+            rounded-4xl
+            border border-white/10
+            bg-linear-to-br
+            from-orange-500/16
+            via-white/4.5
+            to-emerald-400/8
+            shadow-2xl shadow-black/20
+            backdrop-blur-2xl
+            sm:mt-8
+          "
+        >
+          {/* Ambient hero glow */}
+          <div
+            className="
+              pointer-events-none absolute
+              -left-20 -top-24
+              size-72
+              rounded-full
+              bg-orange-400/15
+              blur-[100px]
+            "
+          />
+
+          <div
+            className="
+              pointer-events-none absolute
+              -bottom-32 -right-20
+              size-96
+              rounded-full
+              bg-emerald-400/10
+              blur-[110px]
+            "
+          />
+
+          {/* Grid */}
+          <div
+            className="
+              pointer-events-none absolute inset-0
+              opacity-[0.035]
+              [background-image:linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)]
+              [background-size:60px_60px]
+            "
+          />
+
+          {/* Exact glass shine */}
+          <div
+            className="
+              pointer-events-none absolute inset-y-0 left-[-120%]
+              z-20
+              w-[70%]
+              skew-x-[-18deg]
+              bg-linear-to-r
+              from-transparent
+              via-white/8
+              to-transparent
+              opacity-0
+              transition-[left,opacity]
+              duration-700
+              ease-[cubic-bezier(0.22,1,0.36,1)]
+              group-hover:left-[150%]
+              group-hover:opacity-100
+            "
+          />
+
+          {/* Content */}
+          <div
+            className="
+              relative z-10
+              flex flex-col items-center
+              px-5 py-10
+              text-center
+              sm:px-8 sm:py-12
+              lg:px-12 lg:py-14
+            "
+          >
+            {/* Badge */}
+            <div
+              className="
+                mb-5 inline-flex items-center gap-2
+                rounded-full
+                border border-orange-300/20
+                bg-orange-400/10
+                px-4 py-2
+                text-[10px] font-bold uppercase
+                tracking-[0.2em]
+                text-orange-200
+                shadow-lg shadow-orange-500/5
+                backdrop-blur-xl
+                sm:text-xs
+              "
+            >
+              <Sparkles className="size-3.5 text-orange-300 sm:size-4" />
+              Limited Time Offers
+              <Sparkles className="size-3.5 text-orange-300 sm:size-4" />
+            </div>
+
+            {/* Heading */}
+            <div className="flex items-center justify-center gap-3 sm:gap-5">
+              <div
+                className="
+                  flex size-10 items-center justify-center
+                  rounded-2xl
+                  border border-yellow-300/15
+                  bg-yellow-300/10
+                  shadow-[0_0_35px_rgba(250,204,21,0.12)]
+                  sm:size-14
+                "
+              >
+                <Zap
+                  className="
+                    size-5
+                    fill-yellow-300
+                    text-yellow-200
+                    drop-shadow-[0_0_12px_rgba(255,255,0,0.8)]
+                    sm:size-7
+                  "
+                />
+              </div>
+
+              <h1
+                className="
+                  font-serif
+                  text-4xl font-bold
+                  tracking-tight
+                  text-white
+                  drop-shadow-lg
+                  sm:text-6xl
+                  lg:text-7xl
+                "
+              >
+                Flash Deals
+              </h1>
+
+              <div
+                className="
+                  flex size-10 items-center justify-center
+                  rounded-2xl
+                  border border-yellow-300/15
+                  bg-yellow-300/10
+                  shadow-[0_0_35px_rgba(250,204,21,0.12)]
+                  sm:size-14
+                "
+              >
+                <Zap
+                  className="
+                    size-5
+                    fill-yellow-300
+                    text-yellow-200
+                    drop-shadow-[0_0_12px_rgba(255,255,0,0.8)]
+                    sm:size-7
+                  "
+                />
+              </div>
+            </div>
+
+            {/* Accent line */}
+            <div
+              className="
+                mt-4 h-1 w-24
+                rounded-full
+                bg-linear-to-r
+                from-orange-400
+                via-yellow-300
+                to-orange-400
+                shadow-[0_0_20px_rgba(251,146,60,0.35)]
+              "
+            />
+
+            {/* Description */}
+            <p
+              className="
+                mt-5 max-w-xl
+                text-sm leading-relaxed
+                text-white/65
+                sm:text-base
+              "
+            >
+              Grab incredible deals before they're gone.
+              <br className="hidden sm:block" />
+              Shop now and save{" "}
+              <span className="font-semibold text-orange-200">
+                up to 50% off.
+              </span>
+            </p>
+
+            {/* Stats */}
+            <div
+              className="
+                mt-8 flex items-center
+                rounded-2xl
+                border border-white/10
+                bg-black/10
+                px-5 py-3
+                shadow-xl shadow-black/10
+                backdrop-blur-xl
+                sm:px-7
+              "
+            >
+              <div className="min-w-16 text-center">
+                <p className="text-xl font-bold text-white sm:text-2xl">
+                  {products.length}
+                </p>
+
+                <p
+                  className="
+                    mt-0.5 text-[9px]
+                    font-medium uppercase
+                    tracking-[0.15em]
+                    text-white/40
+                    sm:text-[10px]
+                  "
+                >
+                  Deals
+                </p>
+              </div>
+
+              <div className="mx-4 h-8 w-px bg-white/10 sm:mx-6" />
+
+              <div className="flex items-center gap-2.5">
+                <div
+                  className="
+                    flex size-8 items-center justify-center
+                    rounded-xl
+                    bg-yellow-300/10
+                    text-yellow-200
+                  "
+                >
+                  <Zap className="size-4 fill-yellow-300" />
+                </div>
+
+                <div>
+                  <p className="text-sm font-bold text-white sm:text-base">
+                    Up to 50%
+                  </p>
+
+                  <p
+                    className="
+                      text-[9px]
+                      font-medium uppercase
+                      tracking-[0.15em]
+                      text-white/40
+                      sm:text-[10px]
+                    "
+                  >
+                    Savings
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Heading */}
-          <div className="mb-5 flex items-center justify-center gap-3 sm:gap-5">
-            <Zap className="size-8 fill-yellow-300 text-yellow-200 drop-shadow-[0_0_12px_rgba(255,255,0,0.8)] sm:size-12 lg:size-14 animate-pulse" />
+          {/* Bottom highlight */}
+          <div
+            className="
+              absolute inset-x-0 bottom-0
+              h-px
+              bg-linear-to-r
+              from-transparent
+              via-orange-300/40
+              to-transparent
+            "
+          />
+        </section>
 
-            <h1 className="font-serif text-4xl font-bold tracking-tight text-white drop-shadow-lg sm:text-6xl lg:text-7xl">
-              Flash Deals
-            </h1>
+        {/* =======================================================
+            PRODUCTS SECTION
+        ======================================================= */}
 
-            <Zap className="size-8 fill-yellow-300 text-yellow-200 drop-shadow-[0_0_12px_rgba(255,255,0,0.8)] sm:size-12 lg:size-14 animate-pulse" />
-          </div>
+        <section className="mt-12 sm:mt-16">
+          {/* Section Header */}
+          <div
+            className="
+              mb-7 flex flex-col gap-4
+              sm:flex-row
+              sm:items-end
+              sm:justify-between
+            "
+          >
+            <div>
+              {/* Eyebrow */}
+              <div
+                className="
+                  mb-2 flex items-center gap-2
+                  text-[10px] font-bold
+                  uppercase tracking-[0.2em]
+                  text-orange-300/80
+                "
+              >
+                <span className="size-1.5 rounded-full bg-orange-400 shadow-[0_0_10px_rgba(251,146,60,0.7)]" />
+                Limited Time
+              </div>
 
-          {/* Description */}
-          <p className="mx-auto max-w-xl text-sm leading-relaxed text-white/90 sm:text-base lg:text-lg">
-            Grab incredible deals before they're gone.
-            <br className="hidden sm:block" />
-            Shop now and save{" "}
-            <span className="font-bold text-yellow-200">up to 50% off!</span>
-          </p>
+              {/* Title */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="
+                    flex size-10 shrink-0
+                    items-center justify-center
+                    rounded-2xl
+                    border border-orange-300/15
+                    bg-orange-400/10
+                    shadow-lg shadow-orange-500/5
+                  "
+                >
+                  <Zap className="size-5 fill-yellow-300 text-yellow-200" />
+                </div>
 
-          {/* Glass stats */}
-          <div className="mx-auto mt-8 flex w-fit items-center gap-3 rounded-2xl border border-white/25 bg-white/10 px-5 py-3 shadow-xl backdrop-blur-xl sm:gap-6 sm:px-7">
-            <div className="text-center">
-              <p className="text-xl font-bold text-white">{products.length}</p>
-              <p className="text-[10px] font-medium uppercase tracking-wider text-white/70 sm:text-xs">
-                Deals
+                <h2
+                  className="
+                    font-serif
+                    text-2xl font-bold
+                    tracking-tight
+                    text-white
+                    sm:text-3xl
+                  "
+                >
+                  Today's Hot Deals
+                </h2>
+              </div>
+
+              <p className="mt-2 text-sm text-white/45">
+                Don't miss these limited-time offers.
               </p>
             </div>
 
-            <div className="h-8 w-px bg-white/20" />
+            {/* Deal count */}
+            {!loading && products.length > 0 && (
+              <div
+                className="
+                  flex w-fit items-center gap-2
+                  rounded-full
+                  border border-white/10
+                  bg-white/4.5
+                  px-4 py-2
+                  text-xs font-semibold
+                  text-white/60
+                  shadow-lg shadow-black/10
+                  backdrop-blur-xl
+                "
+              >
+                <Clock3 className="size-3.5 text-orange-300" />
+                {products.length} deals available
+              </div>
+            )}
+          </div>
 
-            <div className="flex items-center gap-2 text-center">
-              <Zap className="size-4 fill-yellow-300 text-yellow-200" />
-              <div>
-                <p className="text-sm font-bold text-white sm:text-base">
-                  Up to 50%
-                </p>
-                <p className="text-[10px] font-medium uppercase tracking-wider text-white/70 sm:text-xs">
-                  Savings
+          {/* =====================================================
+              CONTENT
+          ===================================================== */}
+
+          {loading ? (
+            <div
+              className="
+                flex min-h-60
+                items-center justify-center
+                rounded-3xl
+                border border-white/10
+                bg-white/[0.035]
+                backdrop-blur-2xl
+              "
+            >
+              <Loading />
+            </div>
+          ) : products.length === 0 ? (
+            /* Empty State */
+            <div
+              className="
+                group relative isolate
+                overflow-hidden
+                rounded-3xl
+                border border-white/10
+                bg-white/[0.035]
+                px-6 py-20
+                text-center
+                shadow-2xl shadow-black/10
+                backdrop-blur-2xl
+              "
+            >
+              {/* Glow */}
+              <div
+                className="
+                  pointer-events-none absolute
+                  left-1/2 top-0
+                  size-56
+                  -translate-x-1/2
+                  rounded-full
+                  bg-orange-400/8
+                  blur-[90px]
+                "
+              />
+
+              {/* Shine */}
+              <div
+                className="
+                  pointer-events-none absolute inset-y-0 left-[-120%]
+                  z-20
+                  w-[70%]
+                  skew-x-[-18deg]
+                  bg-linear-to-r
+                  from-transparent
+                  via-white/8
+                  to-transparent
+                  opacity-0
+                  transition-[left,opacity]
+                  duration-700
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+                  group-hover:left-[150%]
+                  group-hover:opacity-100
+                "
+              />
+
+              <div className="relative z-10">
+                <div
+                  className="
+                    mx-auto mb-5
+                    flex size-20
+                    items-center justify-center
+                    rounded-3xl
+                    border border-orange-300/10
+                    bg-orange-400/10
+                    shadow-[0_0_40px_rgba(251,146,60,0.08)]
+                  "
+                >
+                  <Zap className="size-9 text-orange-300" />
+                </div>
+
+                <h2 className="mb-2 text-2xl font-bold text-white">
+                  No Deals Available
+                </h2>
+
+                <p className="text-sm text-white/45">
+                  Check back soon for amazing deals!
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Bottom glass shine */}
-        <div className="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-white/60 to-transparent" />
-      </section>
-
-      {/* Products */}
-      <section className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <div className="mb-1 flex items-center gap-2">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-linear-to-br from-orange-400 to-app-orange shadow-md shadow-orange-500/20">
-                <Zap className="size-4 fill-yellow-200 text-white" />
-              </div>
-
-              <h2 className="text-2xl font-bold text-app-green sm:text-3xl">
-                Today's Hot Deals
-              </h2>
-            </div>
-
-            <p className="text-sm text-app-text-light">
-              Don't miss these limited-time offers.
-            </p>
-          </div>
-
-          {/* Deal count */}
-          {!loading && products.length > 0 && (
-            <div className="hidden rounded-full border border-orange-200 bg-white/60 px-4 py-2 text-xs font-semibold text-app-orange shadow-sm backdrop-blur-md sm:block">
-              {products.length} deals available
+          ) : (
+            /* Products */
+            <div
+              className="
+                grid grid-cols-2
+                gap-4
+                sm:grid-cols-3
+                md:grid-cols-4
+                xl:grid-cols-5
+                xl:gap-6
+              "
+            >
+              {products.map((product, index) => (
+                <div
+                  key={product._id}
+                  className="animate-[dealCardReveal_.55s_cubic-bezier(.16,1,.3,1)_both]"
+                  style={{
+                    animationDelay: `${index * 45}ms`,
+                  }}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
             </div>
           )}
-        </div>
+        </section>
+      </div>
 
-        {/* Content */}
-        {loading ? (
-          <div className="py-10">
-            <Loading />
-          </div>
-        ) : products.length === 0 ? (
-          <div className="relative overflow-hidden rounded-3xl border border-white/60 bg-white/60 px-6 py-20 text-center shadow-xl shadow-orange-900/5 backdrop-blur-xl">
-            {/* Glow */}
-            <div className="pointer-events-none absolute left-1/2 top-0 size-48 -translate-x-1/2 rounded-full bg-orange-300/20 blur-3xl" />
+      {/* =========================================================
+          BOTTOM FADE
+      ========================================================= */}
 
-            <div className="relative">
-              <div className="mx-auto mb-5 flex size-20 items-center justify-center rounded-3xl bg-linear-to-br from-orange-100 to-amber-50 shadow-inner">
-                <Zap className="size-10 text-app-orange" />
-              </div>
+      <div
+        className="
+          pointer-events-none absolute inset-x-0 bottom-0
+          h-80
+          bg-linear-to-t
+          from-[#031c14]
+          via-[#031c14]/60
+          to-transparent
+        "
+      />
 
-              <h2 className="mb-2 text-2xl font-bold text-app-green">
-                No Deals Available
-              </h2>
+      {/* =========================================================
+          ANIMATIONS
+      ========================================================= */}
 
-              <p className="text-sm text-app-text-light">
-                Check back soon for amazing deals!
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 xl:gap-6">
-            {products.map((product) => (
-              <div
-                key={product._id}
-                className="animate-[fadeIn_0.5s_ease-out_both]"
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-    </div>
+      <style>{`
+        @keyframes pageReveal {
+          from {
+            opacity: 0;
+            transform: translateY(18px) scale(0.99);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes dealCardReveal {
+          from {
+            opacity: 0;
+            transform: translateY(18px) scale(0.985);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes liquidFloat {
+          0%,
+          100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+
+          35% {
+            transform: translate3d(35px, -25px, 0) scale(1.06);
+          }
+
+          70% {
+            transform: translate3d(-20px, 30px, 0) scale(0.96);
+          }
+        }
+
+        @keyframes liquidFloatReverse {
+          0%,
+          100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+
+          40% {
+            transform: translate3d(-30px, 25px, 0) scale(1.05);
+          }
+
+          75% {
+            transform: translate3d(25px, -20px, 0) scale(0.96);
+          }
+        }
+
+        @keyframes liquidPulse {
+          0%,
+          100% {
+            opacity: 0.45;
+            transform: scale(1);
+          }
+
+          50% {
+            opacity: 0.8;
+            transform: scale(1.12);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+          }
+        }
+      `}</style>
+    </main>
   );
 };
 

@@ -8,7 +8,7 @@ const AppLayout = () => {
   return (
     <>
       <Banners />
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="min-h-screen">
         <Outlet />
       </main>
