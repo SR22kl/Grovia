@@ -5,6 +5,7 @@ import { MapPinIcon, PlusIcon, SparklesIcon } from "lucide-react";
 import Loading from "../components/Loading";
 import AddressCard from "../components/AddressCard";
 import AddressForm from "../components/AddressForm";
+import Navbar from "../components/Navbar";
 
 const Addresses = () => {
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -60,9 +61,7 @@ const Addresses = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-linear-to-br from-emerald-950 via-app-green to-emerald-800">
-      {/* =========================================================
-          BACKGROUND AMBIENT GLOWS
-      ========================================================= */}
+      {/* BACKGROUND AMBIENT GLOWS */}
 
       <div className="pointer-events-none absolute -left-32 -top-32 size-96 rounded-full bg-emerald-400/20 blur-3xl" />
 
@@ -79,14 +78,15 @@ const Addresses = () => {
         "
       />
 
-      {/* =========================================================
-          MAIN CONTENT
-      ========================================================= */}
+      {/* MAIN CONTENT */}
+
+      {/* Navbar */}
+      <section className="animate-[pageReveal_.5s_cubic-bezier(.16,1,.3,1)] mt-8">
+        <Navbar />
+      </section>
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-        {/* =======================================================
-            PAGE HEADER
-        ======================================================= */}
+        {/* PAGE HEADER */}
 
         <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           {/* Heading */}
@@ -145,9 +145,7 @@ const Addresses = () => {
           </button>
         </div>
 
-        {/* =======================================================
-            ADDRESS SUMMARY
-        ======================================================= */}
+        {/* ADDRESS SUMMARY */}
 
         {!loading && addresses.length > 0 && (
           <div
@@ -179,10 +177,7 @@ const Addresses = () => {
           </div>
         )}
 
-        {/* =======================================================
-            FORM MODAL
-        ======================================================= */}
-
+        {/* FORM MODAL */}
         {showForm && (
           <AddressForm
             resetForm={resetForm}
@@ -193,10 +188,7 @@ const Addresses = () => {
           />
         )}
 
-        {/* =======================================================
-            ADDRESSES
-        ======================================================= */}
-
+        {/* ADDRESSES */}
         {loading ? (
           <div className="flex min-h-80 items-center justify-center">
             <Loading />

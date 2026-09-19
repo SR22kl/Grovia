@@ -15,6 +15,7 @@ import {
 import OrderOTP from "../components/OrderTracking/OrderOTP";
 import LiveMap from "../components/OrderTracking/LiveMap";
 import OrderTimeLine from "../components/OrderTracking/OrderTimeLine";
+import Navbar from "../components/Navbar";
 
 const OrderTracking = () => {
   const { id } = useParams();
@@ -46,9 +47,7 @@ const OrderTracking = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-linear-to-br from-emerald-950 via-app-green to-emerald-800 pb-20">
-      {/* =========================================================
-          AMBIENT BACKGROUND GLOWS
-      ========================================================= */}
+      {/* AMBIENT BACKGROUND GLOWS */}
 
       <div className="pointer-events-none absolute -left-40 -top-40 size-125 rounded-full bg-emerald-400/15 blur-3xl" />
 
@@ -56,10 +55,7 @@ const OrderTracking = () => {
 
       <div className="pointer-events-none absolute -bottom-48 left-[25%] size-150 rounded-full bg-teal-300/10 blur-3xl" />
 
-      {/* =========================================================
-          TRANSLUCENT SQUARE GRID
-      ========================================================= */}
-
+      {/* TRANSLUCENT SQUARE GRID */}
       <div
         className="
           pointer-events-none absolute inset-0
@@ -69,15 +65,13 @@ const OrderTracking = () => {
         "
       />
 
-      {/* =========================================================
-          MAIN
-      ========================================================= */}
+      {/* MAIN */}
+      <section className="animate-[pageReveal_.5s_cubic-bezier(.16,1,.3,1)] mt-8">
+        <Navbar />
+      </section>
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-7 sm:px-6 lg:px-8 lg:py-10">
-        {/* =======================================================
-            BACK BUTTON
-        ======================================================= */}
-
+        {/* BACK BUTTON */}
         <button
           onClick={() => navigate("/orders")}
           className="
@@ -101,10 +95,7 @@ const OrderTracking = () => {
           Back to Orders
         </button>
 
-        {/* =======================================================
-            ORDER HEADER
-        ======================================================= */}
-
+        {/* ORDER HEADER */}
         <div
           className="
             relative mb-7 overflow-hidden
@@ -185,29 +176,18 @@ const OrderTracking = () => {
           </div>
         </div>
 
-        {/* =======================================================
-            CONTENT GRID
-        ======================================================= */}
-
+        {/* CONTENT GRID */}
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* =====================================================
-              LEFT
-          ===================================================== */}
+          {/* LEFT */}
 
           <div className="space-y-6 lg:col-span-2">
-            {/* OTP */}
             <OrderOTP order={order} />
 
-            {/* Live Map */}
             <LiveMap order={order} liveLocation={liveLocation} />
 
-            {/* Timeline */}
             <OrderTimeLine order={order} />
 
-            {/* ===================================================
-                DELIVERY PARTNER
-            =================================================== */}
-
+            {/* DELIVERY PARTNER */}
             {order?.deliveryPartner && !isDelivered && !isCancelled && (
               <div
                 className="
@@ -277,15 +257,9 @@ const OrderTracking = () => {
             )}
           </div>
 
-          {/* =====================================================
-              RIGHT
-          ===================================================== */}
-
+          {/* RIGHT */}
           <div className="space-y-5">
-            {/* ===================================================
-                DELIVERY ADDRESS
-            =================================================== */}
-
+            {/* DELIVERY ADDRESS */}
             <div
               className="
                 group relative overflow-hidden
@@ -325,10 +299,7 @@ const OrderTracking = () => {
               </div>
             </div>
 
-            {/* ===================================================
-                ITEMS
-            =================================================== */}
-
+            {/* ITEMS */}
             <div
               className="
                 group relative overflow-hidden

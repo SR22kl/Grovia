@@ -22,25 +22,23 @@ const FlashDeals = () => {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
-      {/* =========================================================
-          LIQUID GLASS BACKGROUND
-      ========================================================= */}
-
-      {/* Top-left emerald glow */}
-      <div
-        className="
+      {/* LIQUID GLASS BACKGROUND */}
+      <div className="pointer-events-none fixed inset-0  overflow-hidden">
+        {/* Top-left emerald glow */}
+        <div
+          className="
           pointer-events-none absolute
-          -left-40 -top-40
+          left-10 top-10
           size-105
           rounded-full
-          bg-emerald-400/15
-          blur-[120px]
+          bg-emerald-400/50
+          blur-[150px]
           animate-[liquidFloat_12s_ease-in-out_infinite]
         "
-      />
+        />
 
-      <div
-        className="
+        <div
+          className="
           pointer-events-none absolute
           -left-40 top-240
           size-105
@@ -49,23 +47,23 @@ const FlashDeals = () => {
           blur-[120px]
           animate-[liquidFloat_12s_ease-in-out_infinite]
         "
-      />
+        />
 
-      {/* Top-right orange glow */}
-      <div
-        className="
+        {/* Top-right orange glow */}
+        <div
+          className="
           pointer-events-none absolute
-          -right-40 top-[18%]
-          size-95
+          -right-40 top-[20%]
+          size-120
           rounded-full
           bg-orange-400/20
           blur-[120px]
           animate-[liquidFloatReverse_15s_ease-in-out_infinite]
         "
-      />
-      
-      <div
-        className="
+        />
+
+        <div
+          className="
           pointer-events-none absolute
           -right-20 top-480
           size-95
@@ -74,22 +72,22 @@ const FlashDeals = () => {
           blur-[120px]
           animate-[liquidFloatReverse_15s_ease-in-out_infinite]
         "
-      />
+        />
 
-      {/* Center emerald glow */}
-      <div
-        className="
+        {/* Center emerald glow */}
+        <div
+          className="
           pointer-events-none absolute
           left-[38%] top-[45%]
-          size-80
+          size-120
           rounded-full
-          bg-emerald-500/50
-          blur-[130px]
+          bg-emerald-500/60
+          blur-[150px]
           animate-[liquidPulse_11s_ease-in-out_infinite]
         "
-      />
-      <div
-        className="
+        />
+        <div
+          className="
           pointer-events-none absolute
           left-[48%] top-600
           size-80
@@ -98,42 +96,43 @@ const FlashDeals = () => {
           blur-[130px]
           animate-[liquidPulse_11s_ease-in-out_infinite]
         "
-      />
+        />
 
-      {/* Bottom orange glow */}
-      <div
-        className="
+        {/* Bottom orange glow */}
+        <div
+          className="
           pointer-events-none absolute
           -bottom-48 -left-20
           size-95
           rounded-full
-          bg-orange-400/60
+          bg-orange-400/40
           blur-[130px]
           animate-[liquidFloat_14s_ease-in-out_infinite]
         "
-      />
+        />
 
-      {/* =========================================================
+        {/* =========================================================
           SUBTLE GLASS GRID
       ========================================================= */}
 
-      <div
-        className="
+        <div
+          className="
           pointer-events-none absolute inset-0
           opacity-[0.035]
           [background-image:linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)]
           [background-size:72px_72px]
         "
-      />
+        />
 
-      {/* Top gloss */}
-      <div
-        className="
+        {/* Top gloss */}
+        <div
+          className="
           pointer-events-none absolute inset-x-0 top-0
           h-105
           bg-[radial-gradient(ellipse_at_top,rgba(52,211,153,0.07),transparent_65%)]
         "
-      />
+        />
+      </div>
 
       {/* =========================================================
           CONTENT

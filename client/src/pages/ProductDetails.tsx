@@ -12,10 +12,14 @@ import {
   MinusIcon,
   PlusIcon,
   ShoppingCartIcon,
+  ShieldCheck,
+  Truck,
+  Sparkles,
 } from "lucide-react";
 import StarRating from "../components/StarRating";
 import DummyReviewsSection from "../assets/DummyReviewsSection";
 import ProductCard from "../components/ProductCard";
+import Navbar from "../components/Navbar";
 
 const ProductDetails = () => {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
@@ -61,34 +65,91 @@ const ProductDetails = () => {
   -------------------------------- */
   if (!product) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-4">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-app-text">
-            Product not found
-          </h2>
+      <div className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl" />
+          <div className="absolute -bottom-32 -right-20 h-96 w-96 rounded-full bg-orange-400/10 blur-3xl" />
 
-          <Link
-            to="/products"
+          <div
             className="
-              mt-4 inline-flex items-center gap-2
-              rounded-xl
-              bg-app-green
-              px-5 py-2.5
-              font-medium text-white
-              transition-all duration-300
-              hover:-translate-y-0.5
-              hover:shadow-lg
+               pointer-events-none absolute inset-0
+               opacity-[0.035]
+               [background-image:linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)]
+               [background-size:72px_72px]
+            "
+          />
+        </div>
+
+        <section className="animate-[pageReveal_.5s_cubic-bezier(.16,1,.3,1)] mt-8">
+          <Navbar />
+        </section>
+
+        <main className="relative flex min-h-[calc(100vh-100px)] items-center justify-center px-4">
+          <div
+            className="
+              relative isolate overflow-hidden
+              rounded-3xl
+              border border-white/10
+              bg-white/[0.035]
+              px-8 py-12
+              text-center
+              shadow-2xl shadow-black/20
+              backdrop-blur-2xl
             "
           >
-            <ArrowLeft className="size-4" />
-            Back to Products
-          </Link>
-        </div>
+            <div
+              className="
+                pointer-events-none absolute inset-y-0 left-[-120%]
+                z-20 w-[70%] skew-x-[-18deg]
+                bg-linear-to-r from-transparent via-white/8 to-transparent
+                opacity-0
+                transition-[left,opacity]
+                duration-700
+                ease-[cubic-bezier(0.22,1,0.36,1)]
+                group-hover:left-[150%]
+                group-hover:opacity-100
+              "
+            />
+
+            <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10">
+              <ShoppingCartIcon className="size-7 text-emerald-300" />
+            </div>
+
+            <h2 className="text-2xl font-semibold text-white">
+              Product not found
+            </h2>
+
+            <p className="mt-2 max-w-sm text-sm leading-6 text-white/45">
+              The product you're looking for may have been removed or is no
+              longer available.
+            </p>
+
+            <Link
+              to="/products"
+              className="
+                mt-7 inline-flex items-center gap-2
+                rounded-xl
+                border border-emerald-300/20
+                bg-emerald-400/10
+                px-5 py-2.5
+                text-sm font-semibold
+                text-emerald-200
+                transition-all duration-300
+                hover:-translate-y-0.5
+                hover:border-emerald-300/30
+                hover:bg-emerald-400/15
+              "
+            >
+              <ArrowLeft className="size-4" />
+              Back to Products
+            </Link>
+          </div>
+        </main>
       </div>
     );
   }
 
-  // cart
+  // Cart
   const cartItem = items.find((item) => item.product._id === product._id);
 
   const inCart = !!cartItem;
@@ -120,117 +181,187 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* BACKGROUND AMBIENT GLOW */}
-      <div
-        className="
-          pointer-events-none fixed
-          left-0 top-32
-          -z-10
-          h-96 w-96
-          rounded-full
-          bg-green-200/20
-          blur-3xl
-        "
-      />
+    <div className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
+      {/* BACKGROUND */}
+      <div className="pointer-events-none fixed inset-0  overflow-hidden">
+        {/* AMBIENT GLOWS */}
 
-      <div
-        className="
-          pointer-events-none fixed
-          bottom-0 right-0
-          -z-10
-          h-96 w-96
+        {/* Large emerald glow — top left */}
+        <div
+          className="
+          absolute
+          -left-56
+          top-24
+          size-170
           rounded-full
-          bg-orange-200/20
-          blur-3xl
+          bg-emerald-500/40
+          blur-[130px]
         "
-      />
+        />
 
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        {/* Teal glow — right side */}
+        <div
+          className="
+          absolute
+          -right-56
+          top-[30%]
+          size-180
+          rounded-full
+          bg-teal-400/40
+          blur-[130px]
+        "
+        />
+
+        {/* Orange glow — bottom */}
+        <div
+          className="
+          absolute
+          -bottom-70
+          left-[32%]
+          size-130
+          rounded-full
+          bg-orange-400/25
+          blur-[130px]
+        "
+        />
+
+        {/* Smaller emerald highlight */}
+        <div
+          className="
+          absolute
+          left-[38%]
+          top-[18%]
+          size-65
+          rounded-full
+          bg-emerald-300/20
+          blur-[100px]
+        "
+        />
+        {/* GRID */}
+
+        <div
+          className="
+          absolute
+          inset-0
+          opacity-[0.075]
+          [background-image:linear-gradient(rgba(255,255,255,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.55)_1px,transparent_1px)]
+          [background-size:64px_64px]
+        "
+        />
+
+        {/* GRID FADE */}
+        <div
+          className="
+          absolute
+          inset-0
+          bg-[radial-gradient(circle_at_center,transparent_20%,#031c14_90%)]
+          opacity-60
+        "
+        />
+
+        {/* TOP GLOSS */}
+
+        <div
+          className="
+          absolute
+          inset-x-0
+          top-0
+          h-64
+          bg-linear-to-b
+          from-white/[0.035]
+          via-transparent
+          to-transparent
+        "
+        />
+      </div>
+
+      {/* NAVBAR */}
+      <section className="animate-[pageReveal_.5s_cubic-bezier(.16,1,.3,1)] mt-8">
+        <Navbar />
+      </section>
+      <main className="relative mx-auto max-w-7xl px-4 pb-32 pt-5 sm:px-6 lg:px-8">
         {/* BREADCRUMB */}
+
         <nav
           className="
-            mb-2
-            flex items-center gap-2
+            mb-4 flex items-center gap-2
             overflow-hidden
-            text-sm
-            text-app-text-light
+            rounded-2xl
+            border border-white/8
+            bg-white/2.5
+            px-3 py-2
+            text-xs
+            text-white/40
+            backdrop-blur-xl
+            sm:w-fit
           "
         >
           <Link
             to="/"
             className="
-              flex h-8 w-8 shrink-0
-              items-center justify-center
-              rounded-full
-              border border-white/60
-              bg-white/50
-              shadow-sm
-              backdrop-blur-md
+              flex size-8 shrink-0 items-center justify-center
+              rounded-xl
+              border border-white/10
+              bg-white/[0.035]
+              text-white/45
               transition-all duration-300
-              hover:-translate-y-0.5
-              hover:text-app-green
-              hover:shadow-md
+              hover:border-emerald-300/20
+              hover:bg-emerald-400/10
+              hover:text-emerald-200
             "
           >
-            <Home className="size-4" />
+            <Home className="size-3.5" />
           </Link>
 
-          <span className="text-app-border">/</span>
+          <span className="text-white/15">/</span>
 
           <Link
             to="/products"
             className="
+              shrink-0
               transition-colors duration-200
-              hover:text-app-green
+              hover:text-emerald-200
             "
           >
             Products
           </Link>
 
-          <span className="text-app-border">/</span>
+          <span className="text-white/15">/</span>
 
           <Link
             to={`/products?category=${product.category}`}
             className="
-              capitalize
+              shrink-0 capitalize
               transition-colors duration-200
-              hover:text-app-green
+              hover:text-emerald-200
             "
           >
             {categoryLabel}
           </Link>
 
-          <span className="text-app-border">/</span>
+          <span className="text-white/15">/</span>
 
-          <span
-            className="
-              truncate
-              font-medium
-              text-app-green
-            "
-          >
+          <span className="truncate font-medium text-emerald-300/80">
             {product.name}
           </span>
         </nav>
 
-        {/* =========================================
+        {/* =======================================================
             BACK BUTTON
-        ========================================= */}
-
+        ======================================================= */}
         <button
           onClick={() => navigate(-1)}
           className="
-            group
-            mb-6
+            group mb-6
             flex items-center gap-2
-            rounded-full
-            px-2 py-1
-            text-sm
-            text-app-text-light
+            rounded-xl
+            border border-transparent
+            px-3 py-2
+            text-sm text-white/45
             transition-all duration-300
-            hover:bg-white/50
-            hover:text-app-green
+            hover:border-white/8
+            hover:bg-white/[0.035]
+            hover:text-white/80
           "
         >
           <ArrowLeft
@@ -243,96 +374,126 @@ const ProductDetails = () => {
           Back
         </button>
 
-        {/* =========================================
-            PRODUCT DETAILS CARD
-        ========================================= */}
-
-        <div
+        {/* =======================================================
+            MAIN PRODUCT SHOWCASE
+        ======================================================= */}
+        <section
           className="
-            group/card
-            relative
+            group/showcase relative isolate
             overflow-hidden
-            rounded-3xl
-            border border-white/60
-            bg-white/60
-            shadow-[0_20px_60px_rgba(27,48,34,0.08)]
-            backdrop-blur-xl
-            transition-all duration-500
-            hover:shadow-[0_25px_80px_rgba(27,48,34,0.12)]
+            rounded-4xl
+            border border-white/10
+            bg-white/[0.035]
+            shadow-[0_30px_100px_rgba(0,0,0,0.25)]
+            backdrop-blur-2xl
           "
         >
-          {/* Card ambient glows */}
-
+          {/* Exact Grovia glass shine */}
           <div
             className="
-              pointer-events-none
-              absolute -left-24 -top-24
-              h-64 w-64
+              pointer-events-none absolute inset-y-0 left-[-120%]
+              z-30 w-[70%] skew-x-[-18deg]
+              bg-linear-to-r
+              from-transparent
+              via-white/8
+              to-transparent
+              opacity-0
+              transition-[left,opacity]
+              duration-700
+              ease-[cubic-bezier(0.22,1,0.36,1)]
+              group-hover/showcase:left-[150%]
+              group-hover/showcase:opacity-100
+            "
+          />
+
+          {/* Ambient card glows */}
+          <div
+            className="
+              pointer-events-none absolute
+              -left-32 -top-32
+              size-96
               rounded-full
-              bg-app-green/10
-              blur-3xl
+              bg-emerald-400/[0.07]
+              blur-[100px]
             "
           />
 
           <div
             className="
-              pointer-events-none
-              absolute -bottom-24 -right-24
-              h-64 w-64
+              pointer-events-none absolute
+              -bottom-32 -right-32
+              size-96
               rounded-full
-              bg-orange-300/10
-              blur-3xl
+              bg-orange-400/5
+              blur-[100px]
             "
           />
 
-          <div className="relative grid md:grid-cols-2">
-            {/* =====================================
+          <div className="relative grid lg:grid-cols-[1.05fr_0.95fr]">
+            {/* =================================================
                 LEFT — PRODUCT IMAGE
-            ===================================== */}
-
+            ================================================= */}
             <div
               className="
-                group/image
-                relative
-                flex
-                min-h-100
-                items-center
-                justify-center
+                group/image relative
+                flex min-h-105
+                items-center justify-center
                 overflow-hidden
+                border-b border-white/8
                 bg-linear-to-br
-                from-white/70
-                via-white/40
-                to-green-50/40
+                from-white/4.5
+                via-transparent
+                to-emerald-400/2.5
                 p-8
-                md:min-h-130
-                md:p-12
+                sm:min-h-130
+                sm:p-12
+                lg:min-h-162.5
+                lg:border-b-0
+                lg:border-r
               "
             >
-              {/* Image glow */}
-
+              {/* Inner image glow */}
               <div
                 className="
-                  pointer-events-none
-                  absolute
-                  h-64 w-64
+                  pointer-events-none absolute
+                  size-72
                   rounded-full
-                  bg-app-green/10
-                  blur-3xl
+                  bg-emerald-400/9
+                  blur-[80px]
                   transition-all duration-700
                   group-hover/image:scale-125
-                  group-hover/image:bg-app-green/15
+                  group-hover/image:bg-emerald-400/13
                 "
               />
 
               <div
                 className="
-                  pointer-events-none
-                  absolute bottom-8 right-8
-                  h-28 w-28
+                  pointer-events-none absolute
+                  bottom-12 right-10
+                  size-36
                   rounded-full
-                  border border-orange-300/10
+                  border border-orange-300/8
                   transition-transform duration-700
                   group-hover/image:scale-110
+                "
+              />
+
+              {/* Decorative rings */}
+              <div
+                className="
+                  pointer-events-none absolute
+                  size-90
+                  rounded-full
+                  border border-white/[0.035]
+                "
+              />
+
+              <div
+                className="
+                  pointer-events-none absolute
+                  size-67.5
+                  rounded-full
+                  border border-emerald-300/[0.035]
                 "
               />
 
@@ -342,24 +503,25 @@ const ProductDetails = () => {
                 alt={product.name}
                 className="
                   relative z-10
-                  max-h-90
+                  max-h-82.5
                   w-auto
+                  max-w-[85%]
                   object-contain
-                  drop-shadow-[0_25px_25px_rgba(27,48,34,0.15)]
+                  drop-shadow-[0_30px_35px_rgba(0,0,0,0.35)]
                   transition-all
                   duration-700
-                  ease-out
-                  group-hover/image:scale-105
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+                  group-hover/image:scale-[1.06]
                   group-hover/image:-translate-y-2
                 "
               />
 
-              {/* PRODUCT BADGES */}
+              {/* Product badges */}
               <div
                 className="
-                  absolute left-5 top-5
-                  z-20
+                  absolute left-5 top-5 z-20
                   flex flex-wrap gap-2
+                  sm:left-7 sm:top-7
                 "
               >
                 {product.isOrganic && (
@@ -367,16 +529,13 @@ const ProductDetails = () => {
                     className="
                       flex items-center gap-1.5
                       rounded-full
-                      border border-green-300/40
-                      bg-green-700/90
+                      border border-emerald-300/20
+                      bg-emerald-400/10
                       px-3 py-1.5
                       text-xs font-semibold
-                      text-white
-                      shadow-lg
-                      shadow-green-900/10
-                      backdrop-blur-md
-                      transition-transform duration-300
-                      hover:scale-105
+                      text-emerald-200
+                      shadow-lg shadow-black/10
+                      backdrop-blur-xl
                     "
                   >
                     <LeafIcon className="size-3.5" />
@@ -388,16 +547,13 @@ const ProductDetails = () => {
                   <span
                     className="
                       rounded-full
-                      border border-orange-200/50
-                      bg-orange-400/90
+                      border border-orange-300/20
+                      bg-orange-400/10
                       px-3 py-1.5
                       text-xs font-semibold
-                      text-white
-                      shadow-lg
-                      shadow-orange-900/10
-                      backdrop-blur-md
-                      transition-transform duration-300
-                      hover:scale-105
+                      text-orange-200
+                      shadow-lg shadow-black/10
+                      backdrop-blur-xl
                     "
                   >
                     {product.discount}% Off
@@ -405,24 +561,20 @@ const ProductDetails = () => {
                 )}
               </div>
 
-              {/* IMAGE HOVER LABEL */}
+              {/* Bottom image label */}
               <div
                 className="
-                  absolute
-                  bottom-5
-                  left-1/2
-                  z-20
-                  -translate-x-1/2
-                  translate-y-3
+                  absolute bottom-6 left-1/2 z-20
+                  -translate-x-1/2 translate-y-3
                   rounded-full
-                  border border-white/60
-                  bg-white/50
+                  border border-white/10
+                  bg-[#061f17]/70
                   px-4 py-2
                   text-xs font-medium
-                  text-app-text-light
-                  shadow-lg
-                  backdrop-blur-md
+                  text-white/55
                   opacity-0
+                  shadow-xl shadow-black/20
+                  backdrop-blur-xl
                   transition-all duration-500
                   group-hover/image:translate-y-0
                   group-hover/image:opacity-100
@@ -432,124 +584,107 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            {/* RIGHT — PRODUCT INFORMATION */}
+            {/* =================================================
+                RIGHT — PRODUCT INFORMATION
+            ================================================= */}
             <div
               className="
-                relative
-                flex flex-col justify-center
-                border-t
-                border-white/50
-                bg-white/40
+                relative flex flex-col justify-center
+                bg-[#061f17]/45
                 p-6
-                backdrop-blur-md
-                md:border-l
-                md:border-t-0
-                md:p-10
+                sm:p-8
                 lg:p-12
               "
             >
               {/* Category */}
-              <span
+              <Link
+                to={`/products?category=${product.category}`}
                 className="
-                  mb-3
-                  w-fit
+                  mb-4 w-fit
                   rounded-full
-                  border border-app-green/10
-                  bg-app-green/5
-                  px-3 py-1
-                  text-xs font-semibold
-                  uppercase
-                  tracking-[0.15em]
-                  text-app-green
+                  border border-emerald-300/15
+                  bg-emerald-400/6
+                  px-3 py-1.5
+                  text-[10px] font-bold
+                  uppercase tracking-[0.18em]
+                  text-emerald-300/80
+                  transition-all duration-300
+                  hover:border-emerald-300/25
+                  hover:bg-emerald-400/10
+                  hover:text-emerald-200
                 "
               >
                 {categoryLabel}
-              </span>
+              </Link>
+
               {/* Product name */}
               <h1
                 className="
-                  font-serif
+                  max-w-2xl
                   text-3xl
-                  font-bold
-                  leading-tight
-                  text-app-text
-                  transition-colors duration-300
-                  md:text-4xl
+                  font-semibold
+                  leading-[1.1]
+                  tracking-tight
+                  text-white
+                  sm:text-4xl
+                  lg:text-[2.8rem]
+                  xl:text-5xl
                 "
               >
                 {product.name}
               </h1>
 
-              {/* Rating  */}
+              {/* Rating */}
               {product.rating > 0 && (
-                <div
-                  className="
-                    mt-4
-                    flex flex-wrap
-                    items-center
-                    gap-2
-                  "
-                >
+                <div className="mt-5 flex flex-wrap items-center gap-3">
                   <div
                     className="
                       flex items-center gap-2
-                      rounded-full
-                      border border-yellow-200/60
-                      bg-yellow-50/60
-                      px-3 py-1.5
-                      backdrop-blur-sm
+                      rounded-xl
+                      border border-yellow-300/15
+                      bg-yellow-400/6
+                      px-3 py-2
+                      backdrop-blur-xl
                     "
                   >
-                    <StarRating rating={product.rating} size={16} />
+                    <StarRating rating={product.rating} size={15} />
 
-                    <span
-                      className="
-                        text-sm
-                        font-semibold
-                        text-green-950
-                      "
-                    >
+                    <span className="text-sm font-semibold text-white/85">
                       {product.rating}
                     </span>
                   </div>
 
-                  <span
-                    className="
-                      text-sm
-                      text-app-text-light
-                    "
-                  >
+                  <span className="text-sm text-white/35">
                     {product.reviewCount} reviews
                   </span>
                 </div>
               )}
 
               {/* Divider */}
-
               <div
                 className="
-                  my-6
-                  h-px
-                  w-full
+                  my-7 h-px w-full
                   bg-linear-to-r
-                  from-app-green/20
-                  via-app-green/5
+                  from-emerald-300/15
+                  via-white/5
                   to-transparent
                 "
               />
 
               {/* Price */}
-              <div className="flex items-end gap-3">
+              <div className="flex flex-wrap items-end gap-3">
                 <span
                   className="
                     bg-linear-to-r
-                    from-app-green
-                    to-green-700
+                    from-emerald-300
+                    via-emerald-200
+                    to-teal-300
                     bg-clip-text
                     text-3xl
                     font-bold
+                    tracking-tight
                     text-transparent
-                    md:text-4xl
+                    sm:text-4xl
                   "
                 >
                   {currency}
@@ -557,17 +692,25 @@ const ProductDetails = () => {
                 </span>
 
                 {product.originalPrice > 0 && (
+                  <span className="mb-1 text-sm font-medium text-white/30 line-through sm:text-base">
+                    {currency}
+                    {product.originalPrice.toFixed(2)}
+                  </span>
+                )}
+
+                {product.discount > 0 && (
                   <span
                     className="
                       mb-1
-                      text-base
-                      font-medium
-                      text-app-text-light
-                      line-through
+                      rounded-lg
+                      border border-orange-300/15
+                      bg-orange-400/[0.07]
+                      px-2 py-1
+                      text-xs font-semibold
+                      text-orange-200/80
                     "
                   >
-                    {currency}
-                    {product.originalPrice.toFixed(2)}
+                    Save {product.discount}%
                   </span>
                 )}
               </div>
@@ -575,94 +718,75 @@ const ProductDetails = () => {
               {/* Description */}
               <p
                 className="
-                  mt-5
-                  max-w-xl
-                  text-sm
-                  leading-7
-                  text-app-text-light
+                  mt-5 max-w-xl
+                  text-sm leading-7
+                  text-white/45
+                  sm:text-[15px]
                 "
               >
                 {product.description}
               </p>
 
               {/* Stock */}
-              <div className="mt-5">
+              <div className="mt-6">
                 {product.stock > 0 ? (
                   <div
                     className="
-                      inline-flex
-                      items-center gap-2
+                      inline-flex items-center gap-2
                       rounded-full
-                      border
-                      border-green-200/70
-                      bg-green-50/70
+                      border border-emerald-300/15
+                      bg-emerald-400/6
                       px-3 py-1.5
-                      text-sm font-medium
-                      text-app-success
-                      backdrop-blur-sm
+                      text-xs font-medium
+                      text-emerald-200
+                      backdrop-blur-xl
                     "
                   >
-                    <span
-                      className="
-                        h-2 w-2
-                        animate-pulse
-                        rounded-full
-                        bg-green-500
-                      "
-                    />
+                    <span className="size-2 animate-pulse rounded-full bg-emerald-400" />
                     In stock · {product.stock} left
                   </div>
                 ) : (
                   <div
                     className="
-                      inline-flex
-                      items-center gap-2
+                      inline-flex items-center gap-2
                       rounded-full
-                      border
-                      border-red-200/70
-                      bg-red-50/70
+                      border border-red-300/15
+                      bg-red-400/6
                       px-3 py-1.5
-                      text-sm font-medium
-                      text-app-error
+                      text-xs font-medium
+                      text-red-200
+                      backdrop-blur-xl
                     "
                   >
-                    <span
-                      className="
-                        h-2 w-2
-                        rounded-full
-                        bg-red-500
-                      "
-                    />
+                    <span className="size-2 rounded-full bg-red-400" />
                     Out of stock
                   </div>
                 )}
               </div>
 
-              {/* QUANTITY + ADD TO CART */}
-              <div className="mt-7 flex gap-3">
+              {/* Quantity + Add to cart */}
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 {/* Quantity */}
                 {inCart && (
                   <div
                     className="
-                      flex items-center
+                      flex h-13.5 shrink-0 items-center
                       rounded-2xl
-                      border border-app-border/70
-                      bg-white/70
+                      border border-white/10
+                      bg-white/[0.035]
                       p-1
-                      shadow-sm
-                      backdrop-blur-md
+                      backdrop-blur-xl
                     "
                   >
                     <button
                       onClick={handleDecrement}
                       className="
-                        flex h-10 w-10
-                        items-center justify-center
+                        flex size-11 items-center justify-center
                         rounded-xl
-                        text-app-text-light
+                        text-white/45
                         transition-all duration-200
-                        hover:bg-app-green/10
-                        hover:text-app-green
+                        hover:bg-emerald-400/10
+                        hover:text-emerald-200
                         active:scale-90
                       "
                     >
@@ -671,12 +795,9 @@ const ProductDetails = () => {
 
                     <span
                       className="
-                        flex min-w-12
-                        items-center
-                        justify-center
-                        text-sm
-                        font-bold
-                        text-app-text
+                        flex min-w-12 items-center justify-center
+                        text-sm font-bold
+                        text-white
                       "
                     >
                       {displayQuantity}
@@ -685,13 +806,12 @@ const ProductDetails = () => {
                     <button
                       onClick={handleIncrement}
                       className="
-                        flex h-10 w-10
-                        items-center justify-center
+                        flex size-11 items-center justify-center
                         rounded-xl
-                        text-app-text-light
+                        text-white/45
                         transition-all duration-200
-                        hover:bg-app-green/10
-                        hover:text-app-green
+                        hover:bg-emerald-400/10
+                        hover:text-emerald-200
                         active:scale-90
                       "
                     >
@@ -709,66 +829,62 @@ const ProductDetails = () => {
                   }}
                   disabled={product.stock <= 0}
                   className={`
-                    group
-                    relative
-                    flex flex-1
-                    items-center
-                    justify-center
-                    gap-2
+                    group/cart relative
+                    flex h-13.5 flex-1
+                    items-center justify-center gap-2
                     overflow-hidden
                     rounded-2xl
-                    py-3.5
+                    px-6
                     font-semibold
-                    shadow-lg
                     transition-all duration-300
                     active:scale-[0.98]
                     disabled:cursor-not-allowed
-                    disabled:opacity-50
+                    disabled:opacity-40
 
                     ${
                       inCart
                         ? `
-                          border
-                          border-green-700/30
-                          bg-green-500
-                          text-green-950
-                          shadow-green-900/10
+                          border border-emerald-300/20
+                          bg-emerald-400/10
+                          text-emerald-200
+                          hover:bg-emerald-400/15
                         `
                         : `
-                           bg-linear-to-r
-                          from-app-orange
+                          border border-orange-300/20
+                          bg-linear-to-r
+                          from-orange-400
                           to-orange-500
                           text-white
-                          shadow-orange-900/15
+                          shadow-[0_12px_35px_rgba(249,115,22,0.16)]
                           hover:-translate-y-0.5
-                          hover:shadow-xl
+                          hover:shadow-[0_18px_45px_rgba(249,115,22,0.22)]
                         `
                     }
                   `}
                 >
-                  {/* Glossy sweep */}
                   {!inCart && (
                     <span
                       className="
-                        absolute
-                        inset-y-0
-                        -left-full
-                        w-1/3
-                        skew-x-[-20deg]
-                        bg-white/20
-                        transition-all duration-700
-                        group-hover:left-[120%]
+                        pointer-events-none absolute inset-y-0 left-[-120%]
+                        w-[55%] skew-x-[-18deg]
+                        bg-linear-to-r
+                        from-transparent
+                        via-white/20
+                        to-transparent
+                        transition-[left]
+                        duration-700
+                        ease-[cubic-bezier(0.22,1,0.36,1)]
+                        group-hover/cart:left-[140%]
                       "
                     />
                   )}
 
                   <ShoppingCartIcon
                     className="
-                      relative
-                      size-5
+                      relative size-5
                       transition-transform duration-300
-                      group-hover:scale-110
-                      group-hover:-rotate-3
+                      group-hover/cart:scale-110
+                      group-hover/cart:-rotate-3
                     "
                   />
 
@@ -778,127 +894,94 @@ const ProductDetails = () => {
                 </button>
               </div>
 
-              {/* TRUST INDICATORS */}
+              {/* Trust indicators */}
               <div
                 className="
-                  mt-6
-                  grid grid-cols-3
-                  divide-x
-                  divide-app-border/60
+                  mt-7 grid grid-cols-3
+                  overflow-hidden
                   rounded-2xl
-                  border border-white/60
-                  bg-white/40
-                  py-3
-                  backdrop-blur-md
+                  border border-white/8
+                  bg-white/2.5
+                  backdrop-blur-xl
                 "
               >
-                <div className="text-center">
-                  <p
-                    className="
-                      text-xs
-                      font-semibold
-                      text-app-text
-                    "
-                  >
+                <div
+                  className="
+                    flex flex-col items-center justify-center
+                    gap-1 px-2 py-4
+                    text-center
+                  "
+                >
+                  <ShieldCheck className="size-4 text-emerald-300/70" />
+                  <p className="text-[11px] font-semibold text-white/70">
                     Quality
                   </p>
-
-                  <p
-                    className="
-                      mt-0.5
-                      text-[10px]
-                      text-app-text-light
-                    "
-                  >
-                    Guaranteed
-                  </p>
+                  <p className="text-[9px] text-white/30">Guaranteed</p>
                 </div>
 
-                <div className="text-center">
-                  <p
-                    className="
-                      text-xs
-                      font-semibold
-                      text-app-text
-                    "
-                  >
+                <div
+                  className="
+                    flex flex-col items-center justify-center
+                    gap-1 border-x border-white/8
+                    px-2 py-4
+                    text-center
+                  "
+                >
+                  <Sparkles className="size-4 text-orange-300/70" />
+                  <p className="text-[11px] font-semibold text-white/70">
                     Fresh
                   </p>
-
-                  <p
-                    className="
-                      mt-0.5
-                      text-[10px]
-                      text-app-text-light
-                    "
-                  >
-                    Carefully packed
-                  </p>
+                  <p className="text-[9px] text-white/30">Carefully packed</p>
                 </div>
 
-                <div className="text-center">
-                  <p
-                    className="
-                      text-xs
-                      font-semibold
-                      text-app-text
-                    "
-                  >
+                <div
+                  className="
+                    flex flex-col items-center justify-center
+                    gap-1 px-2 py-4
+                    text-center
+                  "
+                >
+                  <Truck className="size-4 text-emerald-300/70" />
+                  <p className="text-[11px] font-semibold text-white/70">
                     Secure
                   </p>
-
-                  <p
-                    className="
-                      mt-0.5
-                      text-[10px]
-                      text-app-text-light
-                    "
-                  >
-                    Easy checkout
-                  </p>
+                  <p className="text-[9px] text-white/30">Easy checkout</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* CUSTOMER REVIEWS */}
+        {/* =======================================================
+            CUSTOMER REVIEWS
+        ======================================================= */}
         {product.reviewCount > 0 && (
-          <div className="mt-12">
+          <section className="mt-14">
             <DummyReviewsSection product={product} />
-          </div>
+          </section>
         )}
 
-        {/* RELATED PRODUCTS */}
+        {/* =======================================================
+            RELATED PRODUCTS
+        ======================================================= */}
         {relatedProducts.length > 0 && (
-          <section className="mb-44 mt-16">
+          <section className="mb-20 mt-16">
             {/* Section heading */}
-
             <div
               className="
-                mb-6
-                flex items-end
-                justify-between
-                gap-4
+                mb-7 flex flex-col gap-5
+                sm:flex-row sm:items-end sm:justify-between
               "
             >
               <div>
                 <div className="mb-2 flex items-center gap-2">
-                  <span
-                    className="
-                      h-1.5 w-8
-                      rounded-full
-                      bg-app-orange
-                    "
-                  />
+                  <span className="h-1.5 w-8 rounded-full bg-orange-400" />
 
                   <span
                     className="
-                      text-xs
-                      font-semibold
-                      uppercase
-                      tracking-[0.15em]
-                      text-app-orange
+                      text-[10px] font-bold
+                      uppercase tracking-[0.18em]
+                      text-orange-300/75
                     "
                   >
                     You may also like
@@ -907,49 +990,38 @@ const ProductDetails = () => {
 
                 <h2
                   className="
-                    font-serif
-                    text-2xl
-                    font-bold
-                    text-app-green
-                    md:text-3xl
+                    text-2xl font-semibold
+                    tracking-tight text-white
+                    sm:text-3xl
                   "
                 >
                   Related Products
                 </h2>
 
-                <p
-                  className="
-                    mt-1
-                    text-sm
-                    text-app-text-light
-                  "
-                >
+                <p className="mt-1.5 text-sm text-white/35">
                   More from {categoryLabel}
                 </p>
               </div>
 
               {/* View all */}
-
               <Link
                 to={`/products?category=${product.category}`}
                 onClick={() => scrollTo(0, 0)}
                 className="
                   group
-                  flex items-center gap-1.5
-                  rounded-full
-                  border border-app-orange/20
-                  bg-white/50
-                  px-4 py-2
-                  text-sm
-                  font-medium
-                  text-app-orange
-                  shadow-sm
-                  backdrop-blur-md
+                  flex w-fit items-center gap-1.5
+                  rounded-xl
+                  border border-orange-300/15
+                  bg-orange-400/5
+                  px-4 py-2.5
+                  text-sm font-medium
+                  text-orange-200/80
+                  backdrop-blur-xl
                   transition-all duration-300
                   hover:-translate-y-0.5
-                  hover:bg-app-orange
-                  hover:text-white
-                  hover:shadow-lg
+                  hover:border-orange-300/25
+                  hover:bg-orange-400/10
+                  hover:text-orange-100
                 "
               >
                 View All
@@ -966,12 +1038,12 @@ const ProductDetails = () => {
             {/* Products */}
             <div
               className="
-                grid
-                grid-cols-2
+                grid grid-cols-2
                 gap-4
                 sm:grid-cols-3
-                lg:grid-cols-5
-                xl:gap-8
+                lg:grid-cols-4
+                xl:grid-cols-5
+                xl:gap-6
               "
             >
               {relatedProducts.slice(0, 5).map((rp) => (
@@ -980,7 +1052,39 @@ const ProductDetails = () => {
             </div>
           </section>
         )}
-      </div>
+      </main>
+      {/* =========================================================
+          PAGE ANIMATIONS
+      ========================================================= */}
+      <style>{`
+        @keyframes productPageReveal {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes productFloat {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+
+        .product-page-enter {
+          animation:
+            productPageReveal
+            .7s
+            cubic-bezier(.16,1,.3,1)
+            both;
+        }
+      `}</style>
     </div>
   );
 };

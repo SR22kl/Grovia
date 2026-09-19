@@ -9,79 +9,80 @@ import Navbar from "../components/Navbar";
 const Home = () => {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
-      {/* LIQUID GLASS BACKGROUND */}
-
-      {/* Ambient emerald glow - top left */}
-      <div
-        className="
+      {/* GLASS BACKGROUND */}
+      <div className="pointer-events-none fixed inset-0  overflow-hidden">
+        {/* Ambient emerald glow - top left */}
+        <div
+          className="
           pointer-events-none absolute
-          -left-40 -top-40
+          -left-20 top-20
           size-105
           rounded-full
-          bg-emerald-400/8
-          blur-[120px]
+          bg-emerald-400/80
+          blur-[200px]
           animate-[liquidFloat_12s_ease-in-out_infinite]
         "
-      />
+        />
 
-      {/* Ambient teal glow - top right */}
-      <div
-        className="
+        {/* Ambient teal glow - top right */}
+        <div
+          className="
           pointer-events-none absolute
-          -right-32 top-[12%]
-          size-90
+          -right-15 top-[12%]
+          size-100
           rounded-full
-          bg-teal-300/20
-          blur-[110px]
+          bg-teal-400/60
+          blur-[180px]
           animate-[liquidFloatReverse_15s_ease-in-out_infinite]
         "
-      />
+        />
 
-      {/* Ambient emerald glow - center */}
-      <div
-        className="
+        {/* Ambient emerald glow - center */}
+        <div
+          className="
           pointer-events-none absolute
           left-[35%] top-[42%]
-          size-75
+          size-125
           rounded-full
-          bg-emerald-500/50
-          blur-[120px]
+          bg-emerald-500/80
+          blur-[180px]
           animate-[liquidPulse_10s_ease-in-out_infinite]
         "
-      />
+        />
 
-      {/* Ambient glow - bottom */}
-      <div
-        className="
+        {/* Ambient glow - bottom */}
+        <div
+          className="
           pointer-events-none absolute
-          -bottom-48 right-[15%]
+          -bottom-48 right-[10%]
           size-105
           rounded-full
           bg-emerald-300/50
           blur-[130px]
           animate-[liquidFloat_14s_ease-in-out_infinite]
         "
-      />
-      {/* SUBTLE GLASS GRID */}
+        />
+        {/* SUBTLE GLASS GRID */}
 
-      <div
-        className="
+        <div
+          className="
           pointer-events-none absolute inset-0
           opacity-[0.035]
           [background-image:linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)]
           [background-size:72px_72px]
         "
-      />
+        />
 
-      {/* TOP GLOSS */}
+        {/* TOP GLOSS */}
 
-      <div
-        className="
+        <div
+          className="
           pointer-events-none absolute inset-x-0 top-0
           h-105
           bg-[radial-gradient(ellipse_at_top,rgba(52,211,153,0.07),transparent_65%)]
         "
-      />
+        />
+      </div>
 
       {/* MAIN CONTENT */}
 
