@@ -1,94 +1,322 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { PlusIcon, EditIcon, XIcon } from "lucide-react";
+import {
+  PlusIcon,
+  EditIcon,
+  XIcon,
+  PackageIcon,
+  ArrowUpRightIcon,
+} from "lucide-react";
 import type { Product } from "../../types";
 import Loading from "../../components/Loading";
 import { dummyProducts } from "../../assets/assets";
 
 export default function AdminProducts() {
+  const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
 
-    const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+  const fetchProducts = async () => {
+    setProducts(dummyProducts);
 
-    const fetchProducts = async () => {
-        setProducts(dummyProducts);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-    };
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  };
 
-    useEffect(() => {
-        fetchProducts();
-    }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    const handleMarkOutOfStock = async (id: string, name: string) => {
-        if (!window.confirm(`Are you sure you want to mark "${name}" as out of stock?`)) return;
-        console.log(id);
-    };
+  const handleMarkOutOfStock = async (id: string, name: string) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to mark "${name}" as out of stock?`,
+      )
+    )
+      return;
 
-    if (loading) return <Loading />
+    console.log(id);
+  };
 
-    return (
-        <>
-            <div className="bg-white rounded-2xl shadow-sm border border-app-border overflow-hidden">
-                <div className="px-6 py-5 border-b border-app-border flex items-center justify-between gap-4 flex-wrap">
-                    <h2 className="text-xl font-semibold text-zinc-900">Products</h2>
-                    <Link to="/admin/products/new" className="flex items-center gap-2 px-4 py-2 bg-app-green text-white rounded-xl hover:bg-green-950 transition-colors font-medium text-sm">
-                        <PlusIcon className="size-4" /> Add Product
-                    </Link>
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm whitespace-nowrap">
-                        <thead className="bg-app-cream/50 text-zinc-500 uppercase text-xs font-semibold">
-                            <tr>
-                                <th className="px-6 py-4">Product</th>
-                                <th className="px-6 py-4">Price</th>
-                                <th className="px-6 py-4">Stock</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-app-border">
-                            {products.length === 0 ? (
-                                <tr>
-                                    <td colSpan={4} className="px-6 py-8 text-center text-zinc-500">No products found.</td>
-                                </tr>
-                            ) : (
-                                products.map(product => (
-                                    <tr key={product._id} className="hover:bg-zinc-50/50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <img src={product.image} alt={product.name} className="size-12 rounded-lg object-cover" />
-                                                <div>
-                                                    <p className="font-semibold text-zinc-900">{product.name}</p>
-                                                    <p className="text-xs text-zinc-500">{product.category || "Uncategorized"}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 font-medium">{currency}{product.price.toFixed(2)}</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${product.stock > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                                                {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <Link to={`/admin/products/${product._id}/edit`} className="p-2 text-zinc-500 hover:text-app-orange bg-zinc-100 hover:bg-orange-50 rounded-lg transition-colors">
-                                                    <EditIcon className="size-4" />
-                                                </Link>
-                                                <button onClick={() => handleMarkOutOfStock(product._id, product.name)} title="Mark Out of Stock" className="p-2 text-zinc-500 hover:text-red-600 bg-zinc-100 hover:bg-red-50 rounded-lg transition-colors">
-                                                    <XIcon className="size-4" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+  if (loading) return <Loading />;
+
+  return (
+    <div className="space-y-6">
+      {/* =========================================================
+          PAGE HEADER
+      ========================================================= */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/50">
+            Inventory
+          </p>
+
+          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Products
+          </h1>
+
+          <p className="mt-1 text-sm text-white/40">
+            Manage your product catalog and inventory.
+          </p>
+        </div>
+
+        <Link
+          to="/admin/products/new"
+          className="
+            group relative isolate flex w-fit items-center gap-2
+            overflow-hidden
+            rounded-xl
+            border border-emerald-400/20
+            bg-emerald-400/10
+            px-4 py-2.5
+            text-sm font-medium
+            text-emerald-200
+            shadow-[0_10px_35px_rgba(16,185,129,0.08)]
+            transition-all duration-300
+            hover:-translate-y-0.5
+            hover:border-emerald-300/30
+            hover:bg-emerald-400/[0.14]
+          "
+        >
+          <PlusIcon className="relative z-10 size-4" />
+
+          <span className="relative z-10">Add Product</span>
+
+          <span
+            className="
+              pointer-events-none absolute inset-y-0 left-[-120%]
+              w-[65%] skew-x-[-18deg]
+              bg-linear-to-r
+              from-transparent
+              via-white/[0.08]
+              to-transparent
+              opacity-0
+              transition-[left,opacity]
+              duration-700
+              group-hover:left-[150%]
+              group-hover:opacity-100
+            "
+          />
+        </Link>
+      </div>
+
+      {/* =========================================================
+          PRODUCTS TABLE
+      ========================================================= */}
+      <section
+        className="
+          group relative isolate overflow-hidden
+          rounded-3xl
+          border border-white/10
+          bg-white/[0.035]
+          shadow-[0_25px_80px_rgba(0,0,0,0.18)]
+          backdrop-blur-2xl
+        "
+      >
+        {/* Ambient Glow */}
+        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/[0.05] blur-[100px]" />
+
+        {/* Header */}
+        <div className="relative z-10 flex items-center justify-between gap-4 border-b border-white/10 px-4 py-5 sm:px-6">
+          <div className="flex items-center gap-3">
+            <div
+              className="
+                flex size-10 items-center justify-center
+                rounded-xl
+                border border-emerald-400/15
+                bg-emerald-400/[0.06]
+                text-emerald-300
+              "
+            >
+              <PackageIcon className="size-5" />
             </div>
-        </>
-    );
+
+            <div>
+              <h2 className="text-sm font-semibold text-white">
+                Product Catalog
+              </h2>
+
+              <p className="text-xs text-white/35">
+                {products.length} products
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="relative z-10 overflow-x-auto no-scrollbar">
+          <table className="w-full min-w-[760px] text-left text-sm">
+            <thead>
+              <tr className="border-b border-white/10 bg-white/[0.015] text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
+                <th className="px-6 py-4">Product</th>
+                <th className="px-6 py-4">Price</th>
+                <th className="px-6 py-4">Stock</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-white/[0.06]">
+              {products.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-6 py-12 text-center text-sm text-white/35"
+                  >
+                    No products found.
+                  </td>
+                </tr>
+              ) : (
+                products.map((product) => (
+                  <tr
+                    key={product._id}
+                    className="
+                      group/row
+                      transition-colors duration-200
+                      hover:bg-white/[0.025]
+                    "
+                  >
+                    {/* Product */}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="
+                            size-12 shrink-0
+                            overflow-hidden
+                            rounded-xl
+                            border border-white/10
+                            bg-white/[0.04]
+                          "
+                        >
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="
+                              size-full
+                              object-cover
+                              transition-transform
+                              duration-500
+                              group-hover/row:scale-105
+                            "
+                          />
+                        </div>
+
+                        <div className="min-w-0">
+                          <p className="max-w-[260px] truncate font-semibold text-white/85">
+                            {product.name}
+                          </p>
+
+                          <p className="mt-0.5 text-xs text-white/35">
+                            {product.category || "Uncategorized"}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Price */}
+                    <td className="px-6 py-4">
+                      <span className="font-medium text-white/80">
+                        {currency}
+                        {product.price.toFixed(2)}
+                      </span>
+                    </td>
+
+                    {/* Stock */}
+                    <td className="px-6 py-4">
+                      <span
+                        className={`
+                          inline-flex
+                          rounded-full
+                          border
+                          px-2.5 py-1
+                          text-[10px]
+                          font-semibold
+                          uppercase
+                          tracking-wide
+                          ${
+                            product.stock > 0
+                              ? "border-emerald-400/15 bg-emerald-400/[0.07] text-emerald-300"
+                              : "border-red-400/15 bg-red-400/[0.07] text-red-300"
+                          }
+                        `}
+                      >
+                        {product.stock > 0
+                          ? `${product.stock} in stock`
+                          : "Out of stock"}
+                      </span>
+                    </td>
+
+                    {/* Actions */}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          to={`/admin/products/${product._id}/edit`}
+                          title="Edit Product"
+                          className="
+                            flex size-9 items-center justify-center
+                            rounded-xl
+                            border border-white/10
+                            bg-white/[0.035]
+                            text-white/40
+                            transition-all duration-300
+                            hover:border-emerald-400/20
+                            hover:bg-emerald-400/[0.08]
+                            hover:text-emerald-300
+                          "
+                        >
+                          <EditIcon className="size-4" />
+                        </Link>
+
+                        <button
+                          onClick={() =>
+                            handleMarkOutOfStock(product._id, product.name)
+                          }
+                          title="Mark Out of Stock"
+                          className="
+                            flex size-9 items-center justify-center
+                            rounded-xl
+                            border border-white/10
+                            bg-white/[0.035]
+                            text-white/40
+                            transition-all duration-300
+                            hover:border-red-400/20
+                            hover:bg-red-400/[0.07]
+                            hover:text-red-300
+                          "
+                        >
+                          <XIcon className="size-4" />
+                        </button>
+
+                        <Link
+                          to={`/admin/products/${product._id}/edit`}
+                          className="
+                            hidden items-center gap-1
+                            rounded-xl
+                            border border-white/10
+                            bg-white/[0.035]
+                            px-3 py-2
+                            text-xs font-medium
+                            text-white/45
+                            transition-all duration-300
+                            hover:border-white/15
+                            hover:bg-white/[0.06]
+                            hover:text-white/80
+                            xl:flex
+                          "
+                        >
+                          Edit
+                          <ArrowUpRightIcon className="size-3.5" />
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
 }

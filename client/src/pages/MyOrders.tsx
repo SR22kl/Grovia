@@ -303,10 +303,7 @@ const MyOrders = () => {
           </div>
         </section>
 
-        {/* =======================================================
-            FILTER TABS
-        ======================================================= */}
-
+        {/* FILTER TABS */}
         <section
           className="
             mt-5
@@ -323,10 +320,10 @@ const MyOrders = () => {
               p-1.5
               shadow-xl shadow-black/10
               backdrop-blur-2xl
-              scrollbar-hide
+              scrollbar-none
             "
           >
-            <div className="flex min-w-max gap-1">
+            <div className="flex min-w-max md:gap-1 gap-0.5">
               {tabs.map((tab) => {
                 const isActive = tab === activeTab;
 
@@ -339,13 +336,13 @@ const MyOrders = () => {
                       group relative
                       overflow-hidden
                       rounded-xl
-                      px-4 py-2.5
+                      px-4  py-2.5
                       text-xs font-semibold
                       transition-all duration-300
                       sm:text-sm
                       ${
                         isActive
-                          ? "bg-emerald-400/12 text-emerald-200 shadow-lg shadow-emerald-950/10"
+                          ? "bg-emerald-400/12 text-emerald-300 shadow-lg shadow-emerald-950/10"
                           : "text-white/40 hover:bg-white/4.5 hover:text-white/75"
                       }
                     `}
