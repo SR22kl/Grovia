@@ -2,6 +2,9 @@ import "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import authRouter from "./routes/authRoutes.js";
+import productRouter from "./routes/productRoutes.js";
+import uploadRouter from "./routes/uploadRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 const app = express();
 
@@ -15,7 +18,11 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server is live!");
 });
 
-app.use("/api/aut", authRouter);
+// Routes
+app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
+app.use("/api/upload", uploadRouter);
+app.use("/api/order", orderRouter);
 
 // Error handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
