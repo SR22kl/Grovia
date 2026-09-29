@@ -17,6 +17,14 @@ dist-ssr/
 # Local environment files
 *.local
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Server environment
+server/.env
+
 # Grovia assets
 /grovia-assets/
 

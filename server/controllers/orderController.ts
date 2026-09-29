@@ -77,17 +77,19 @@ export const createOrder = async (req: Request, res: Response) => {
 
   if (paymentMethod === "card") {
     // stripe payment link
-
-    res.json({ order });
-
-    //Decrease stock
-    for (const item of orderItems) {
-      await prisma.product.update({
-        where: { id: item.product },
-        data: { stock: { decrement: item.quantity } },
-      });
-    }
   }
+
+  res.json({ order });
+
+  //Decrease stock
+  for (const item of orderItems) {
+    await prisma.product.update({
+      where: { id: item.product },
+      data: { stock: { decrement: item.quantity } },
+    });
+  }
+
+  // Send stock update events for each product in the order
 };
 
 // Get user's order
@@ -185,5 +187,5 @@ export const getOrderLocation = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "Order not found" });
   }
 
-  res.json({liveLocation: order.liveLocation, status: order.status});
+  res.json({ liveLocation: order.liveLocation, status: order.status });
 };
