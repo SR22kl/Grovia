@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["./**/*.ts", "./**/*.d.ts"],
+  "files": ["./types/express/index.d.ts"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules"]
 }
