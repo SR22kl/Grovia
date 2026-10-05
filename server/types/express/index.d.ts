@@ -7,7 +7,7 @@ declare global {
         id: string;
         isAdmin: boolean;
       };
-      partner?: DeliveryPartner;
+      partner?: any;
     }
   }
 }
