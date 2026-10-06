@@ -25,7 +25,10 @@ export const createOrder = async (req: Request, res: Response) => {
   //check if products is in stock
   for (const item of items) {
     const product = productMap[item.product];
-    if (!product || (product.stock || 0) < item.quantity) {
+    if (!product) {
+      return res.status(400).json({ message: `Product not found` });
+    }
+    if ((product.stock || 0) < item.quantity) {
       return res
         .status(400)
         .json({ message: `Product ${product.name} is out of stock` });
