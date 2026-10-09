@@ -276,7 +276,7 @@ export default function AdminDashboard() {
               ) : (
                 stats?.recentOrders.map((order: any) => (
                   <tr
-                    key={order._id}
+                    key={order.id}
                     className="
                       group/row
                       transition-colors duration-200
@@ -285,7 +285,7 @@ export default function AdminDashboard() {
                   >
                     <td className="px-6 py-4">
                       <span className="font-mono text-xs text-emerald-200/60">
-                        #{order._id.slice(-6).toUpperCase()}
+                        #{order.id.slice(-6).toUpperCase()}
                       </span>
                     </td>
 

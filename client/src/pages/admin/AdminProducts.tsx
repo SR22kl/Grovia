@@ -170,7 +170,7 @@ export default function AdminProducts() {
               ) : (
                 products.map((product) => (
                   <tr
-                    key={product._id}
+                    key={product.id}
                     className="
                       group/row
                       transition-colors duration-200
@@ -251,7 +251,7 @@ export default function AdminProducts() {
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          to={`/admin/products/${product._id}/edit`}
+                          to={`/admin/products/${product.id}/edit`}
                           title="Edit Product"
                           className="
                             flex size-9 items-center justify-center
@@ -270,7 +270,7 @@ export default function AdminProducts() {
 
                         <button
                           onClick={() =>
-                            handleMarkOutOfStock(product._id, product.name)
+                            handleMarkOutOfStock(product.id, product.name)
                           }
                           title="Mark Out of Stock"
                           className="
@@ -289,7 +289,7 @@ export default function AdminProducts() {
                         </button>
 
                         <Link
-                          to={`/admin/products/${product._id}/edit`}
+                          to={`/admin/products/${product.id}/edit`}
                           className="
                             hidden items-center gap-1
                             rounded-xl

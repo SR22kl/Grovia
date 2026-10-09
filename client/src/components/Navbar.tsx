@@ -16,13 +16,10 @@ import {
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const user: any = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    isAdmin: true,
-  };
+  const { user, logout } = useAuth();
 
   const { cartCount, setIsCartOpen } = useCart();
 
@@ -43,6 +40,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
+    logout();
     setUserMenuOpen(false);
     navigate("/");
   };
@@ -53,9 +51,7 @@ const Navbar = () => {
 
   return (
     <>
-      {/* =========================================================
-          NAVBAR
-      ========================================================= */}
+      {/* NAVBAR */}
 
       <header className="sticky top-0 z-50 px-4 sm:px-5 lg:px-6">
         <nav
@@ -71,9 +67,7 @@ const Navbar = () => {
             animate-[navbarEnter_.5s_cubic-bezier(.16,1,.3,1)]
           "
         >
-          {/* =====================================================
-              GLASS SHINE
-          ===================================================== */}
+          {/* GLASS SHINE */}
 
           <div
             className="
@@ -111,14 +105,10 @@ const Navbar = () => {
             "
           />
 
-          {/* =====================================================
-              NAV CONTENT
-          ===================================================== */}
+          {/* NAV CONTENT */}
 
           <div className="relative z-10 flex h-17 items-center gap-3 px-3 sm:px-5 lg:px-6">
-            {/* ===================================================
-                LOGO
-            =================================================== */}
+            {/* Logo */}
 
             <Link
               to="/"
@@ -178,9 +168,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* ===================================================
-                DESKTOP NAVIGATION
-            =================================================== */}
+            {/* DESKTOP NAVIGATION */}
 
             <div className="ml-5 hidden items-center gap-1 md:flex">
               <Link
@@ -276,9 +264,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* ===================================================
-                SEARCH
-            =================================================== */}
+            {/* SEARCH */}
 
             <form
               onSubmit={handleSearch}
@@ -354,9 +340,7 @@ const Navbar = () => {
               </div>
             </form>
 
-            {/* ===================================================
-                RIGHT ACTIONS
-            =================================================== */}
+            {/* RIGHT ACTIONS */}
 
             <div className="ml-auto flex items-center gap-1.5 sm:ml-3">
               {/* Cart */}
@@ -410,9 +394,7 @@ const Navbar = () => {
                 )}
               </button>
 
-              {/* =================================================
-                  USER
-              ================================================= */}
+              {/* USER */}
 
               <div className="relative">
                 {user ? (
@@ -512,9 +494,7 @@ const Navbar = () => {
                   </div>
                 )}
 
-                {/* =================================================
-                    USER DROPDOWN
-                ================================================= */}
+                {/* USER DROPDOWN */}
 
                 {userMenuOpen && (
                   <>
@@ -565,16 +545,16 @@ const Navbar = () => {
                               text-[#031c14]
                             "
                           >
-                            {user.name.charAt(0).toUpperCase()}
+                            {user?.name.charAt(0).toUpperCase()}
                           </div>
 
                           <div className="min-w-0">
                             <p className="truncate text-xs font-bold text-white/85">
-                              {user.name}
+                              {user?.name}
                             </p>
 
                             <p className="mt-0.5 truncate text-[10px] text-white/30">
-                              {user.email}
+                              {user?.email}
                             </p>
                           </div>
                         </div>
@@ -742,9 +722,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* =====================================================
-              MOBILE MENU
-          ===================================================== */}
+          {/* MOBILE MENU */}
 
           {mobileMenuOpen && (
             <div
@@ -890,9 +868,7 @@ const Navbar = () => {
         </nav>
       </header>
 
-      {/* =========================================================
-          ANIMATIONS
-      ========================================================= */}
+      {/* ANIMATIONS */}
 
       <style>{`
         @keyframes navbarEnter {

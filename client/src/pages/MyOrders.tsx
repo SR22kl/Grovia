@@ -559,8 +559,8 @@ const MyOrders = () => {
 
                 return (
                   <Link
-                    to={`/orders/${order._id}`}
-                    key={order._id}
+                    to={`/orders/${order.id}`}
+                    key={order.id}
                     style={{
                       animationDelay: `${index * 70}ms`,
                     }}
@@ -665,7 +665,7 @@ const MyOrders = () => {
 
                         <div>
                           <p className="text-sm font-bold text-white">
-                            Order #{order._id.slice(-8).toUpperCase()}
+                            Order #{order.id.slice(-8).toUpperCase()}
                           </p>
 
                           <div className="mt-1 flex items-center gap-1.5">

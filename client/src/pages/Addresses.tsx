@@ -49,7 +49,7 @@ const Addresses = () => {
       isDefault: add.isDefault,
     });
 
-    setEditingId(add._id);
+    setEditingId(add.id);
     setShowForm(true);
   };
 
@@ -236,7 +236,7 @@ const Addresses = () => {
           <div className="grid gap-5 md:grid-cols-2">
             {addresses.map((add, index) => (
               <div
-                key={add._id}
+                key={add.id}
                 className="animate-[fadeIn_0.5s_ease-out_both]"
                 style={{
                   animationDelay: `${index * 80}ms`,

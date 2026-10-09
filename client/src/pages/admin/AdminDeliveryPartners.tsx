@@ -147,7 +147,7 @@ export default function AdminDeliveryPartners() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {partners.map((partner, index) => (
             <section
-              key={partner._id}
+              key={partner.id}
               className="
                 group relative isolate overflow-hidden
                 rounded-3xl
@@ -265,7 +265,7 @@ export default function AdminDeliveryPartners() {
 
                 {/* Toggle */}
                 <button
-                  onClick={() => toggleActive(partner._id, partner.isActive)}
+                  onClick={() => toggleActive(partner.id, partner.isActive)}
                   className={`
                     w-full
                     rounded-xl

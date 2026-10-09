@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Navigate, NavLink, Outlet } from "react-router-dom";
 import {
   PlusIcon,
   PackageSearchIcon,
@@ -10,8 +10,11 @@ import {
   Truck,
 } from "lucide-react";
 import AdminNavBar from "../../components/AdminNavBar";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AdminLayout() {
+  const { user } = useAuth();
+
   const AdminLinkData = [
     {
       to: "/admin",
@@ -45,11 +48,12 @@ export default function AdminLayout() {
     },
   ];
 
+  if (!user?.isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
-      {/* =========================================================
-          BACKGROUND
-      ========================================================= */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         {/* Emerald Glow */}
         {/* Ambient emerald glow - top left */}

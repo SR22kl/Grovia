@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types";
-import { dummyProducts } from "../assets/assets";
 import { Zap, Sparkles, Clock3 } from "lucide-react";
 import Loading from "../components/Loading";
 import ProductCard from "../components/ProductCard";
 import Navbar from "../components/Navbar";
+import api from "../config/api";
+import toast from "react-hot-toast";
 
 const FlashDeals = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setProducts(dummyProducts.filter((p: Product) => p.stock > 0));
-
-    const timer = setTimeout(() => {
+    try {
+      api
+        .get("/products/flash-deals")
+        .then((res) => setProducts(res.data.products));
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
       setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    }
   }, []);
+
+  console.log(products);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
@@ -597,9 +602,9 @@ const FlashDeals = () => {
                 xl:gap-6
               "
             >
-              {products.map((product, index) => (
+              {products?.map((product, index) => (
                 <div
-                  key={product._id}
+                  key={product.id}
                   className="animate-[dealCardReveal_.55s_cubic-bezier(.16,1,.3,1)_both]"
                   style={{
                     animationDelay: `${index * 45}ms`,

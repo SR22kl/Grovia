@@ -204,7 +204,7 @@ const AddressCard = ({
             </button>
 
             <button
-              onClick={() => handleDelete(addr._id)}
+              onClick={() => handleDelete(addr.id)}
               aria-label={`Delete ${addr.label} address`}
               className="
                 flex size-9

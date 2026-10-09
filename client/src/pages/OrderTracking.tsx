@@ -30,7 +30,7 @@ const OrderTracking = () => {
   } | null>(null);
 
   useEffect(() => {
-    setOrder(dummyDashboardOrdersData.find((o) => o._id === id) as any);
+    setOrder(dummyDashboardOrdersData.find((o) => o.id === id) as any);
     setLoading(false);
   }, [id]);
 
@@ -125,7 +125,7 @@ const OrderTracking = () => {
               </div>
 
               <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                Order #{order._id.slice(-8).toUpperCase()}
+                Order #{order.id.slice(-8).toUpperCase()}
               </h1>
 
               <div className="mt-2 flex items-center gap-2 text-xs text-emerald-100/55">

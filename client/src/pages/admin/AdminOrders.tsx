@@ -154,7 +154,7 @@ export default function AdminOrders() {
               ) : (
                 orders.map((order: any) => (
                   <tr
-                    key={order._id}
+                    key={order.id}
                     className="
                       group/row
                       transition-colors duration-200
@@ -164,7 +164,7 @@ export default function AdminOrders() {
                     {/* Order */}
                     <td className="px-6 py-4">
                       <p className="font-mono text-xs font-semibold text-emerald-200/70">
-                        #{order._id.slice(-6).toUpperCase()}
+                        #{order.id.slice(-6).toUpperCase()}
                       </p>
 
                       <p className="mt-1 text-xs text-white/30">
@@ -222,7 +222,7 @@ export default function AdminOrders() {
                       ) : (
                         <button
                           onClick={() => {
-                            setAssignModal(order._id);
+                            setAssignModal(order.id);
                             setSelectedPartner("");
                           }}
                           className="
@@ -249,7 +249,7 @@ export default function AdminOrders() {
                       <select
                         value={order.status}
                         onChange={(e) =>
-                          handleStatusChange(order._id, e.target.value)
+                          handleStatusChange(order.id, e.target.value)
                         }
                         className={`
                           cursor-pointer
@@ -389,7 +389,7 @@ export default function AdminOrders() {
                 <div className="relative z-10 mb-5 max-h-72 space-y-2 overflow-y-auto no-scrollbar">
                   {partners.map((partner) => (
                     <label
-                      key={partner._id}
+                      key={partner.id}
                       className={`
                         flex cursor-pointer items-center gap-3
                         rounded-2xl
@@ -397,7 +397,7 @@ export default function AdminOrders() {
                         p-3
                         transition-all duration-300
                         ${
-                          selectedPartner === partner._id
+                          selectedPartner === partner.id
                             ? "border-emerald-400/25 bg-emerald-400/[0.08]"
                             : "border-white/10 bg-white/[0.025] hover:border-white/15 hover:bg-white/[0.045]"
                         }
@@ -406,9 +406,9 @@ export default function AdminOrders() {
                       <input
                         type="radio"
                         name="partner"
-                        value={partner._id}
-                        checked={selectedPartner === partner._id}
-                        onChange={() => setSelectedPartner(partner._id)}
+                        value={partner.id}
+                        checked={selectedPartner === partner.id}
+                        onChange={() => setSelectedPartner(partner.id)}
                         className="accent-emerald-400"
                       />
 

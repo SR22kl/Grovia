@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Product } from "../types";
-import { categoriesData, dummyProducts } from "../assets/assets";
+import { categoriesData } from "../assets/assets";
 import {
   Check,
   ChevronDown,
@@ -13,6 +13,8 @@ import ProductCard from "../components/ProductCard";
 import Loading from "../components/Loading";
 import FilterPanel from "../components/FilterPanel";
 import Navbar from "../components/Navbar";
+import api from "../config/api";
+import toast from "react-hot-toast";
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -86,13 +88,21 @@ const Products = () => {
     setLoading(true);
 
     try {
-      setProducts(
-        dummyProducts.filter(
-          (product) => product.category === category || category === "",
-        ),
-      );
-    } catch (error) {
+      const params = new URLSearchParams();
+      if (category) params.set("category", category);
+      if (organic) params.set("isOrganic", organic);
+      if (sort) params.set("sort", sort);
+      if (minPrice) params.set("minPrice", minPrice);
+      if (maxPrice) params.set("maxPrice", maxPrice);
+      params.set("page", String(page));
+      params.set("limit", "12");
+
+      const { data } = await api.get(`/products?${params.toString()}`);
+      setProducts(data.products);
+      setTotalPages(data.pages);
+    } catch (error: any) {
       console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
     } finally {
       setLoading(false);
     }
@@ -723,7 +733,7 @@ const Products = () => {
                   (product, index) =>
                     product.stock > 0 && (
                       <div
-                        key={product._id}
+                        key={product.id}
                         className="
                           animate-[productReveal_.55s_cubic-bezier(.16,1,.3,1)_both]
                         "

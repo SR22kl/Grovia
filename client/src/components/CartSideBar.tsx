@@ -94,7 +94,7 @@ const CartSideBar = () => {
 
                 return (
                   <div
-                    key={item.product._id}
+                    key={item.product.id}
                     className="group flex gap-3 rounded-2xl border border-white/10 bg-white/10 p-3 shadow-sm backdrop-blur-sm transition-all duration-200 hover:border-white/15 hover:bg-white/[0.13]"
                   >
                     {/* Product Image */}
@@ -122,7 +122,7 @@ const CartSideBar = () => {
                         </div>
 
                         <button
-                          onClick={() => removeFromCart(item.product._id)}
+                          onClick={() => removeFromCart(item.product.id)}
                           aria-label={`Remove ${item.product.name}`}
                           className="shrink-0 rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
                         >
@@ -135,10 +135,7 @@ const CartSideBar = () => {
                         <div className="flex items-center rounded-lg border border-white/10 bg-black/10 p-0.5">
                           <button
                             onClick={() =>
-                              updateQuantity(
-                                item.product._id,
-                                item.quantity - 1,
-                              )
+                              updateQuantity(item.product.id, item.quantity - 1)
                             }
                             aria-label="Decrease quantity"
                             className="flex size-7 items-center justify-center rounded-md text-zinc-300 transition-colors hover:bg-white/10 hover:text-white active:scale-90"
@@ -152,10 +149,7 @@ const CartSideBar = () => {
 
                           <button
                             onClick={() =>
-                              updateQuantity(
-                                item.product._id,
-                                item.quantity + 1,
-                              )
+                              updateQuantity(item.product.id, item.quantity + 1)
                             }
                             aria-label="Increase quantity"
                             className="flex size-7 items-center justify-center rounded-md text-zinc-300 transition-colors hover:bg-white/10 hover:text-white active:scale-90"

@@ -40,7 +40,7 @@ const ProductDetails = () => {
 
     window.scrollTo(0, 0);
 
-    const foundProduct = dummyProducts.find((p) => p._id === id);
+    const foundProduct = dummyProducts.find((p) => p.id === id);
 
     if (foundProduct) {
       setProduct(foundProduct);
@@ -48,7 +48,7 @@ const ProductDetails = () => {
       setProduct(null);
     }
 
-    setRelatedProducts(dummyProducts.filter((p) => p._id !== id));
+    setRelatedProducts(dummyProducts.filter((p) => p.id !== id));
 
     setLoading(false);
   }, [id]);
@@ -150,7 +150,7 @@ const ProductDetails = () => {
   }
 
   // Cart
-  const cartItem = items.find((item) => item.product._id === product._id);
+  const cartItem = items.find((item) => item.product.id === product.id);
 
   const inCart = !!cartItem;
 
@@ -163,9 +163,9 @@ const ProductDetails = () => {
   const handleDecrement = () => {
     if (inCart) {
       if (cartItem.quantity > 1) {
-        updateQuantity(product._id, cartItem.quantity - 1);
+        updateQuantity(product.id, cartItem.quantity - 1);
       } else {
-        removeFromCart(product._id);
+        removeFromCart(product.id);
       }
     } else {
       setLocalQuantity(Math.max(1, localQuantity - 1));
@@ -174,7 +174,7 @@ const ProductDetails = () => {
 
   const handleIncrement = () => {
     if (inCart) {
-      updateQuantity(product._id, cartItem.quantity + 1);
+      updateQuantity(product.id, cartItem.quantity + 1);
     } else {
       setLocalQuantity(localQuantity + 1);
     }
@@ -1047,7 +1047,7 @@ const ProductDetails = () => {
               "
             >
               {relatedProducts.slice(0, 5).map((rp) => (
-                <ProductCard key={rp._id} product={rp} />
+                <ProductCard key={rp.id} product={rp} />
               ))}
             </div>
           </section>

@@ -1,17 +1,7 @@
-import {
-  ArrowRight,
-  Check,
-  MapPinned,
-  Plus,
-} from "lucide-react";
+import { ArrowRight, Check, MapPinned, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const CheckoutAddress = ({
-  user,
-  address,
-  setAddress,
-  setStep,
-}: any) => {
+const CheckoutAddress = ({ user, address, setAddress, setStep }: any) => {
   return (
     <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.07] p-5 shadow-2xl shadow-black/20 backdrop-blur-2xl sm:p-7">
       {/* Header */}
@@ -57,10 +47,10 @@ const CheckoutAddress = ({
               return (
                 <button
                   type="button"
-                  key={addr._id || addr.label}
+                  key={addr.id || addr.label}
                   onClick={() =>
                     setAddress({
-                      _id: addr._id,
+                      id: addr.id,
                       label: addr.label,
                       address: addr.address,
                       city: addr.city,
@@ -147,7 +137,6 @@ const CheckoutAddress = ({
         className="group mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-[#031c14] shadow-lg shadow-emerald-950/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-emerald-400 hover:shadow-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:translate-y-0"
       >
         Continue to Payment
-
         <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
       </button>
     </div>

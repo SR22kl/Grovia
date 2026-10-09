@@ -138,7 +138,7 @@ export default function CheckoutReview({
         <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/2.5">
           {items.map((item, index) => (
             <div
-              key={item.product._id}
+              key={item.product.id}
               className={`group flex items-center gap-3 p-3.5 transition-colors duration-300 hover:bg-white/4 sm:p-4 ${
                 index !== items.length - 1 ? "border-b border-white/[0.07]" : ""
               }`}

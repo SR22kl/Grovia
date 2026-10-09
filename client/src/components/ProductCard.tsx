@@ -16,7 +16,7 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <article
-      onClick={() => navigate(`/products/${product._id}`)}
+      onClick={() => navigate(`/products/${product.id}`)}
       className="
         group
         relative isolate
@@ -142,7 +142,7 @@ const ProductCard = ({ product }: Props) => {
               backdrop-blur-md
             "
           >
-            {product.discount}% Off
+            {product.discount.toFixed(0)}% Off
           </span>
         )}
 
@@ -204,7 +204,7 @@ const ProductCard = ({ product }: Props) => {
           className="
             line-clamp-2
             min-h-10
-            text-xs
+            text-sm
             font-semibold
             leading-5
             text-white/75
