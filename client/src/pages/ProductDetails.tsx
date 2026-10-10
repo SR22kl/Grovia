@@ -2,7 +2,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import type { Product } from "../types";
 import { useEffect, useState } from "react";
-import { dummyProducts } from "../assets/assets";
 import Loading from "../components/Loading";
 import {
   ArrowLeft,
@@ -20,6 +19,7 @@ import StarRating from "../components/StarRating";
 import DummyReviewsSection from "../assets/DummyReviewsSection";
 import ProductCard from "../components/ProductCard";
 import Navbar from "../components/Navbar";
+import api from "../config/api";
 
 const ProductDetails = () => {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
@@ -35,34 +35,49 @@ const ProductDetails = () => {
   const [localQuantity, setLocalQuantity] = useState(1);
 
   useEffect(() => {
-    setLoading(true);
-    setLocalQuantity(1);
-
-    window.scrollTo(0, 0);
-
-    const foundProduct = dummyProducts.find((p) => p.id === id);
-
-    if (foundProduct) {
-      setProduct(foundProduct);
-    } else {
+    const fetchProduct = async () => {
+      setLoading(true);
+      setLocalQuantity(1);
       setProduct(null);
-    }
+      setRelatedProducts([]);
 
-    setRelatedProducts(dummyProducts.filter((p) => p.id !== id));
+      window.scrollTo(0, 0);
 
-    setLoading(false);
-  }, [id]);
+      try {
+        // Fetch product details
+        const { data } = await api.get(`/products/${id}`);
+        const product = data?.product;
 
-  /* --------------------------------
-     Loading
-  -------------------------------- */
+        if (!product) {
+          throw new Error("Product not found");
+        }
+
+        setProduct(product);
+
+        // Fetch related products
+        const { data: relatedData } = await api.get(
+          `/products?category=${product.category}`,
+        );
+
+        setRelatedProducts(
+          (relatedData?.products ?? []).filter((p: Product) => p.id !== id),
+        );
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
+        navigate("/products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id, navigate]);
+
   if (loading) {
     return <Loading />;
   }
 
-  /* --------------------------------
-     Product not found
-  -------------------------------- */
+  // No product found
   if (!product) {
     return (
       <div className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
@@ -346,9 +361,7 @@ const ProductDetails = () => {
           </span>
         </nav>
 
-        {/* =======================================================
-            BACK BUTTON
-        ======================================================= */}
+        {/* BACK BUTTON */}
         <button
           onClick={() => navigate(-1)}
           className="
@@ -374,9 +387,7 @@ const ProductDetails = () => {
           Back
         </button>
 
-        {/* =======================================================
-            MAIN PRODUCT SHOWCASE
-        ======================================================= */}
+        {/* Product Details */}
         <section
           className="
             group/showcase relative isolate
@@ -430,9 +441,7 @@ const ProductDetails = () => {
           />
 
           <div className="relative grid lg:grid-cols-[1.05fr_0.95fr]">
-            {/* =================================================
-                LEFT — PRODUCT IMAGE
-            ================================================= */}
+            {/* LEFT SIDE */}
             <div
               className="
                 group/image relative
@@ -556,7 +565,7 @@ const ProductDetails = () => {
                       backdrop-blur-xl
                     "
                   >
-                    {product.discount}% Off
+                    {product.discount.toFixed(0)}% Off
                   </span>
                 )}
               </div>
@@ -584,9 +593,7 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            {/* =================================================
-                RIGHT — PRODUCT INFORMATION
-            ================================================= */}
+            {/* RIGHT SIDE */}
             <div
               className="
                 relative flex flex-col justify-center
@@ -692,7 +699,7 @@ const ProductDetails = () => {
                 </span>
 
                 {product.originalPrice > 0 && (
-                  <span className="mb-1 text-sm font-medium text-white/30 line-through sm:text-base">
+                  <span className="mb-1 text-sm font-medium text-white/40 line-through sm:text-base">
                     {currency}
                     {product.originalPrice.toFixed(2)}
                   </span>
@@ -710,7 +717,7 @@ const ProductDetails = () => {
                       text-orange-200/80
                     "
                   >
-                    Save {product.discount}%
+                    Save {product.discount.toFixed(0)}%
                   </span>
                 )}
               </div>

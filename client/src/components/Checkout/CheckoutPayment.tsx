@@ -26,7 +26,7 @@ export default function CheckoutPayment({
       icon: CreditCard,
     },
     {
-      value: "cash",
+      value: "cod",
       label: "Cash on Delivery",
       desc: "Pay when your order arrives",
       icon: Banknote,

@@ -12,6 +12,7 @@ interface CheckoutReviewProps {
   address: Address;
   items: any[];
   handlePlaceOrder: () => void;
+  paymentMethod: string;
   loading: boolean;
   total: number;
 }
@@ -20,6 +21,7 @@ export default function CheckoutReview({
   address,
   items,
   handlePlaceOrder,
+  paymentMethod,
   loading,
   total,
 }: CheckoutReviewProps) {
@@ -109,7 +111,13 @@ export default function CheckoutReview({
 
             <div>
               <p className="text-sm font-semibold text-white">
-                Payment at Checkout
+                {paymentMethod === "card"
+                  ? "Credit / Debit Card"
+                  : paymentMethod === "cod"
+                    ? "Cash on Delivery"
+                    : paymentMethod === "paypal"
+                      ? "PayPal"
+                      : paymentMethod}
               </p>
 
               <p className="text-xs text-white/35">
@@ -118,7 +126,7 @@ export default function CheckoutReview({
             </div>
           </div>
 
-          <CheckCircle2 className="size-4 text-emerald-400" />
+          <CheckCircle2 className="size-4 shrink-0 text-emerald-400" />
         </div>
       </section>
 

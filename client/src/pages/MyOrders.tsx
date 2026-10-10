@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Order } from "../types";
 import { Link, useSearchParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { dummyDashboardOrdersData, statusColors } from "../assets/assets";
+import { statusColors } from "../assets/assets";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import {
@@ -13,6 +13,8 @@ import {
   ShoppingBag,
   Sparkles,
 } from "lucide-react";
+import api from "../config/api";
+import toast from "react-hot-toast";
 
 const MyOrders = () => {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
@@ -27,8 +29,17 @@ const MyOrders = () => {
   const { clearCart } = useCart();
 
   const fetchOrders = async () => {
-    setOrders(dummyDashboardOrdersData as any);
-    setLoading(false);
+    setLoading(true);
+    try {
+      const params = activeTab !== "All" ? `?status=${activeTab}` : "";
+      const { data } = await api.get(`/orders${params}`);
+      setOrders(data.orders);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -134,19 +145,12 @@ const MyOrders = () => {
         />
       </div>
 
-      {/* =========================================================
-          CONTENT
-      ========================================================= */}
-
       {/* Navbar */}
       <section className="animate-[pageReveal_.5s_cubic-bezier(.16,1,.3,1)] mt-8">
         <Navbar />
       </section>
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        {/* =======================================================
-            PAGE HEADER
-        ======================================================= */}
-
+        {/* PAGE HEADER */}
         <section
           className="
             mt-6
@@ -392,10 +396,6 @@ const MyOrders = () => {
           </div>
         </section>
 
-        {/* =======================================================
-            CONTENT
-        ======================================================= */}
-
         <section className="mt-6">
           {loading ? (
             <div
@@ -411,10 +411,6 @@ const MyOrders = () => {
               <Loading />
             </div>
           ) : orders.length === 0 ? (
-            /* ===================================================
-               EMPTY STATE
-            =================================================== */
-
             <div
               className="
                 group relative isolate
@@ -547,10 +543,7 @@ const MyOrders = () => {
               </div>
             </div>
           ) : (
-            /* ===================================================
-               ORDERS LIST
-            =================================================== */
-
+            //  ORDERS LIST
             <div className="space-y-4">
               {orders.map((order, index) => {
                 const statusClass =
@@ -582,10 +575,6 @@ const MyOrders = () => {
                       sm:p-6
                     "
                   >
-                    {/* =================================================
-                        CARD AMBIENCE
-                    ================================================= */}
-
                     <div
                       className="
                         pointer-events-none absolute
@@ -631,10 +620,7 @@ const MyOrders = () => {
                       "
                     />
 
-                    {/* =================================================
-                        TOP — ORDER INFO
-                    ================================================= */}
-
+                    {/* TOP — ORDER INFO */}
                     <div
                       className="
                         relative z-10
@@ -691,7 +677,7 @@ const MyOrders = () => {
                           className={`
                             flex items-center gap-1.5
                             rounded-full
-                            border
+                            border border-white/10
                             px-3.5 py-1.5
                             text-xs font-semibold
                             shadow-sm
@@ -728,10 +714,7 @@ const MyOrders = () => {
                       "
                     />
 
-                    {/* =================================================
-                        PRODUCT IMAGES
-                    ================================================= */}
-
+                    {/* PRODUCT IMAGES */}
                     <div
                       className="
                         relative z-10
@@ -802,10 +785,7 @@ const MyOrders = () => {
                       )}
                     </div>
 
-                    {/* =================================================
-                        BOTTOM — ITEMS / PRICE / ARROW
-                    ================================================= */}
-
+                    {/* BOTTOM — ITEMS / PRICE / ARROW */}
                     <div
                       className="
                         relative z-10
@@ -900,10 +880,6 @@ const MyOrders = () => {
         )}
       </div>
 
-      {/* =========================================================
-          BOTTOM FADE
-      ========================================================= */}
-
       <div
         className="
           pointer-events-none absolute inset-x-0 bottom-0
@@ -915,10 +891,7 @@ const MyOrders = () => {
         "
       />
 
-      {/* =========================================================
-          ANIMATIONS
-      ========================================================= */}
-
+      {/* ANIMATIONS */}
       <style>{`
         @keyframes pageReveal {
           from {

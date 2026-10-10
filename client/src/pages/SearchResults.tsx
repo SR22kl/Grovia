@@ -68,18 +68,18 @@ const SearchResults = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#031c14] text-white">
-      {/* =========================================================
-          BACKGROUND
-      ========================================================= */}
+      {/* BACKGROUND */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         {/* Emerald Glow */}
-        <div className="absolute -left-56 top-24 size-150 rounded-full bg-emerald-500/12 blur-[140px]" />
+        <div className="absolute -left-56 top-24 size-150 rounded-full bg-emerald-500/50 blur-[140px]" />
+        <div className="absolute left-85 top-24 size-150 rounded-full bg-emerald-500/50 blur-[140px]" />
 
         {/* Teal Glow */}
-        <div className="absolute -right-56 top-[28%] size-135 rounded-full bg-teal-400/9 blur-[140px]" />
+        <div className="absolute -right-56 top-[28%] size-145 rounded-full bg-teal-600/50 blur-[140px]" />
+        <div className="absolute -right-95 top-[38%] size-150 rounded-full bg-teal-500/50 blur-[140px]" />
 
-        {/* Orange Glow */}
-        <div className="absolute -bottom-65 left-[30%] size-125 rounded-full bg-orange-400/[0.07] blur-[140px]" />
+        {/* Center Glow */}
+        <div className="absolute -bottom-25 left-[40%] size-155 rounded-full bg-green-500/50 blur-[140px]" />
 
         {/* Grid */}
         <div

@@ -10,7 +10,7 @@ const api = axios.create({
 // Inject JWT token from localStorage into every request if it exists
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("auth_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -30,7 +30,10 @@ api.interceptors.response.use(
       localStorage.removeItem("auth_user");
 
       // only redirect if not already on the auth page
-      if (!window.location.pathname.includes("/login") && !window.location.pathname.includes("/register")) {
+      if (
+        !window.location.pathname.includes("/login") &&
+        !window.location.pathname.includes("/register")
+      ) {
         window.location.href = "/login";
       }
     }
