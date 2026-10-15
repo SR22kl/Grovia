@@ -62,7 +62,7 @@ export const getProducts = async (req: Request, res: Response) => {
     return { ...p, discount };
   });
 
-  res.json({ products: productsWithDiscount });
+  res.status(200).json({ products: productsWithDiscount });
 };
 
 // GET /api/product/:id
@@ -112,8 +112,9 @@ export const updateProduct = async (req: Request, res: Response) => {
 // DELETE /api/product/:id
 export const deleteProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const product = await prisma.product.delete({
+   await prisma.product.update({
     where: { id: String(id) },
+    data: {stock: Number(0)},
   });
-  res.json({ message: "Product deleted successfully" });
+  res.json({ message: "Product Updated" });
 };

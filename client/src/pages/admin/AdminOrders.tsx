@@ -3,10 +3,7 @@ import { TruckIcon, ShoppingBagIcon, XIcon, UserRoundIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import type { DeliveryPartner } from "../../types";
 import Loading from "../../components/Loading";
-import {
-  dummyDashboardOrdersData,
-  dummyDeliveryPartnerData,
-} from "../../assets/assets";
+import api from "../../config/api";
 
 export default function AdminOrders() {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
@@ -18,13 +15,27 @@ export default function AdminOrders() {
   const [selectedPartner, setSelectedPartner] = useState("");
 
   const fetchOrders = async () => {
-    setOrders(dummyDashboardOrdersData);
-    setTimeout(() => setLoading(false), 1000);
+    try {
+      const { data } = await api.get("/orders/all");
+      setOrders(data.orders);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchPartners = async () => {
-    setPartners(dummyDeliveryPartnerData as any);
-    setTimeout(() => setLoading(false), 1000);
+    try {
+      const { data } = await api.get("/admin/delivery-partners");
+      setPartners(data?.partners.filter((p: DeliveryPartner) => p.isActive));
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -33,16 +44,31 @@ export default function AdminOrders() {
   }, []);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-    console.log(id, newStatus);
+    try {
+      await api.put(`/orders/${id}/status`, { status: newStatus });
+      toast.success("Status updated successfully!");
+      fetchOrders();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
 
   const handleAssign = async () => {
     if (!assignModal || !selectedPartner) return;
 
-    toast.success("Delivery partner assigned!");
-
-    setAssignModal(null);
-    setSelectedPartner("");
+    try {
+      await api.put(`/admin/orders/${assignModal}/assign`, {
+        partnerId: selectedPartner,
+      });
+      toast.success("Delivery partner assigned successfully!");
+      setAssignModal(null);
+      setSelectedPartner("");
+      fetchOrders();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
 
   const statusOptions = [
@@ -70,9 +96,7 @@ export default function AdminOrders() {
 
   return (
     <div className="space-y-6">
-      {/* =========================================================
-          PAGE HEADER
-      ========================================================= */}
+      {/* PAGE HEADER */}
       <div>
         <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/50">
           Fulfillment
@@ -87,9 +111,7 @@ export default function AdminOrders() {
         </p>
       </div>
 
-      {/* =========================================================
-          ORDERS TABLE
-      ========================================================= */}
+      {/* ORDERS TABLE */}
       <section
         className="
           group relative isolate overflow-hidden
@@ -101,7 +123,7 @@ export default function AdminOrders() {
         "
       >
         {/* Ambient Glow */}
-        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/[0.05] blur-[100px]" />
+        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/5 blur-[100px]" />
 
         {/* Header */}
         <div className="relative z-10 flex items-center justify-between gap-4 border-b border-white/10 px-4 py-5 sm:px-6">
@@ -111,7 +133,7 @@ export default function AdminOrders() {
                 flex size-10 shrink-0 items-center justify-center
                 rounded-xl
                 border border-emerald-400/15
-                bg-emerald-400/[0.06]
+                bg-emerald-400/6
                 text-emerald-300
               "
             >
@@ -130,9 +152,9 @@ export default function AdminOrders() {
 
         {/* Table */}
         <div className="relative z-10 overflow-x-auto no-scrollbar">
-          <table className="w-full min-w-[1050px] text-left text-sm">
+          <table className="w-full min-w-262.5 text-left text-sm">
             <thead>
-              <tr className="border-b border-white/10 bg-white/[0.015] text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
+              <tr className="border-b border-white/10 bg-white/1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
                 <th className="px-6 py-4">Order Details</th>
                 <th className="px-6 py-4">Customer</th>
                 <th className="px-6 py-4">Total</th>
@@ -141,7 +163,7 @@ export default function AdminOrders() {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-white/[0.06]">
+            <tbody className="divide-y divide-white/6">
               {orders.length === 0 ? (
                 <tr>
                   <td
@@ -158,7 +180,7 @@ export default function AdminOrders() {
                     className="
                       group/row
                       transition-colors duration-200
-                      hover:bg-white/[0.025]
+                      hover:bg-white/2.5
                     "
                   >
                     {/* Order */}
@@ -229,13 +251,13 @@ export default function AdminOrders() {
                             flex items-center gap-1.5
                             rounded-xl
                             border border-indigo-400/15
-                            bg-indigo-400/[0.06]
+                            bg-indigo-400/6
                             px-3 py-2
                             text-xs font-medium
                             text-indigo-300
                             transition-all duration-300
                             hover:border-indigo-400/25
-                            hover:bg-indigo-400/[0.10]
+                            hover:bg-indigo-400/10
                           "
                         >
                           <TruckIcon className="size-3.5" />
@@ -261,8 +283,8 @@ export default function AdminOrders() {
                           outline-none
                           transition-all duration-300
                           focus:ring-2
-                          focus:ring-white/[0.08]
-                          ${statusColors[order.status] || "border-white/10 bg-white/[0.05] text-white/60"}
+                          focus:ring-white/8
+                          ${statusColors[order.status] || "border-white/10 bg-white/5 text-white/60"}
                         `}
                       >
                         {statusOptions.map((status) => (
@@ -284,9 +306,7 @@ export default function AdminOrders() {
         </div>
       </section>
 
-      {/* =========================================================
-          ASSIGN DELIVERY PARTNER MODAL
-      ========================================================= */}
+      {/* ASSIGN DELIVERY PARTNER MODAL */}
       {assignModal && (
         <>
           {/* Overlay */}
@@ -316,7 +336,7 @@ export default function AdminOrders() {
               "
             >
               {/* Modal Glow */}
-              <div className="pointer-events-none absolute -right-24 -top-24 size-48 rounded-full bg-emerald-400/[0.08] blur-3xl" />
+              <div className="pointer-events-none absolute -right-24 -top-24 size-48 rounded-full bg-emerald-400/8 blur-3xl" />
 
               {/* Header */}
               <div className="relative z-10 mb-5 flex items-center justify-between">
@@ -326,7 +346,7 @@ export default function AdminOrders() {
                       flex size-10 items-center justify-center
                       rounded-xl
                       border border-emerald-400/15
-                      bg-emerald-400/[0.06]
+                      bg-emerald-400/6
                       text-emerald-300
                     "
                   >
@@ -355,7 +375,7 @@ export default function AdminOrders() {
                     text-white/40
                     transition-all duration-300
                     hover:border-white/15
-                    hover:bg-white/[0.06]
+                    hover:bg-white/6
                     hover:text-white
                   "
                 >
@@ -370,12 +390,13 @@ export default function AdminOrders() {
                     relative z-10
                     rounded-2xl
                     border border-white/10
-                    bg-white/[0.025]
+                    bg-white/2.5
                     p-5
                     text-center
+                    mb-4
                   "
                 >
-                  <TruckIcon className="mx-auto mb-3 size-8 text-white/20" />
+                  <TruckIcon className="mx-auto mb-3 size-8 text-green-700/80" />
 
                   <p className="text-sm text-white/45">
                     No active delivery partners.
@@ -398,8 +419,8 @@ export default function AdminOrders() {
                         transition-all duration-300
                         ${
                           selectedPartner === partner.id
-                            ? "border-emerald-400/25 bg-emerald-400/[0.08]"
-                            : "border-white/10 bg-white/[0.025] hover:border-white/15 hover:bg-white/[0.045]"
+                            ? "border-emerald-400/25 bg-emerald-400/8"
+                            : "border-white/10 bg-white/2.5 hover:border-white/15 hover:bg-white/4.5"
                         }
                       `}
                     >
@@ -417,7 +438,7 @@ export default function AdminOrders() {
                           flex size-9 shrink-0 items-center justify-center
                           rounded-xl
                           border border-emerald-400/15
-                          bg-emerald-400/[0.06]
+                          bg-emerald-400/6
                           text-emerald-300
                         "
                       >
@@ -453,7 +474,7 @@ export default function AdminOrders() {
                     text-white/50
                     transition-all duration-300
                     hover:border-white/15
-                    hover:bg-white/[0.06]
+                    hover:bg-white/6
                     hover:text-white/80
                   "
                 >

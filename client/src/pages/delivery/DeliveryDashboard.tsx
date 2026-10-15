@@ -14,7 +14,19 @@ import DeliveryOrderCard from "../../components/Delivery/DeliveryOrderCard";
 import Loading from "../../components/Loading";
 
 import type { Order } from "../../types";
-import { dummyDashboardOrdersData } from "../../assets/assets";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+const API_URL = import.meta.env.VITE_BASE_URL || "http://localhost:4000/api";
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("delivery_token");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
 
 export default function DeliveryDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -33,8 +45,20 @@ export default function DeliveryDashboard() {
 
   const fetchOrders = async () => {
     setLoading(true);
-    setOrders(dummyDashboardOrdersData as any);
-    setLoading(false);
+    try {
+      const { data } = await axios.get(
+        `${API_URL}/delivery/my-deliveries?status=${tab}`,
+        getAuthHeaders(),
+      );
+      setOrders(data?.orders);
+      setLoading(false);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -265,9 +289,7 @@ export default function DeliveryDashboard() {
         </div>
       )}
 
-      {/* -------------------------------------------------
-          MODALS
-      -------------------------------------------------- */}
+      {/* MODALS */}
       {otpModal && (
         <OtpModal
           setOtpModal={setOtpModal}

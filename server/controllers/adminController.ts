@@ -48,10 +48,10 @@ export const getAdminDashboardData = async (req: Request, res: Response) => {
 // Get delivery partners list
 // GET /api/admin/delivery-partners
 export const getDeliveryPartners = async (req: Request, res: Response) => {
-  const deliveryPartners = await prisma.deliveryPartner.findMany({
+  const partners = await prisma.deliveryPartner.findMany({
     orderBy: { createdAt: "desc" },
   });
-  res.json({ deliveryPartners });
+  res.status(200).json({ partners });
 };
 
 // Create delivery partner profile
@@ -95,7 +95,7 @@ export const updateDeliveryPartner = async (req: Request, res: Response) => {
   if (name) data.name = name;
   if (phone) data.phone = phone;
   if (vehicleType) data.vehicleType = vehicleType;
-  if (isActive !== undefined) data.isActive = isActive;
+  data.isActive = isActive;
 
   try {
     const partner = await prisma.deliveryPartner.update({

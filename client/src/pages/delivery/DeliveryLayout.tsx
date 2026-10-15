@@ -2,17 +2,26 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { CircleUserRound, LogOut, Truck, Wifi } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { DeliveryPartner } from "../../types";
-import { dummyDeliveryPartnerData } from "../../assets/assets";
 
 export default function DeliveryLayout() {
   const navigate = useNavigate();
   const [partner, setPartner] = useState<DeliveryPartner | null>(null);
 
   useEffect(() => {
-    setPartner(dummyDeliveryPartnerData[0] as DeliveryPartner);
-  }, []);
+    const saved = localStorage.getItem("delivery_partner");
+    const token = localStorage.getItem("delivery_token");
+
+    if (!saved || !token) {
+      navigate("/delivery/login");
+      return;
+    } 
+    setPartner(JSON.parse(saved));
+  }, [navigate]);
 
   const handleLogout = () => {
+    localStorage.removeItem("delivery_partner");
+    localStorage.removeItem("delivery_token");
+    setPartner(null);
     navigate("/delivery/login");
   };
 
@@ -20,8 +29,7 @@ export default function DeliveryLayout() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#031c14]">
-      {/* ================= BACKGROUND ================= */}
-
+      {/* Glass Background */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         {/* Ambient emerald glows */}
         <div className="absolute -left-48 -top-48 size-150 rounded-full bg-emerald-500/15 blur-[140px]" />
@@ -41,8 +49,7 @@ export default function DeliveryLayout() {
         />
       </div>
 
-      {/* ================= HEADER ================= */}
-
+      {/* HEADER */}
       <header className="sticky top-0 z-40 border-b border-white/8 bg-[#031c14]/70 backdrop-blur-2xl">
         <div className="mx-auto flex h-17 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
@@ -59,7 +66,7 @@ export default function DeliveryLayout() {
 
             <div>
               <h1 className="text-sm font-bold tracking-tight text-white sm:text-base">
-                Instacart
+                Grovia
                 <span className="text-emerald-400"> Delivery</span>
               </h1>
 
@@ -112,7 +119,7 @@ export default function DeliveryLayout() {
         </div>
       </header>
 
-      {/* ================= CONTENT ================= */}
+      {/* CONTENT */}
 
       <main className="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="animate-[fadeUp_.45s_ease-out]">

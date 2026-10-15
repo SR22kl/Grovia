@@ -20,6 +20,7 @@ import frozen_foods from "./frozen_foods.png";
 import personal_care from "./personal_care.png";
 import baby_care from "./baby_care.png";
 import meat_seafood from "./meat_seafood.png";
+import instant_foods from "./instant_foods.png";
 
 export const assets = {
   delivery_truck,
@@ -38,6 +39,7 @@ export const categoriesData = [
   { slug: "beverages", name: "Beverages", image: drinks },
   { slug: "meat-seafood", name: "Meat & Seafood", image: meat_seafood },
   { slug: "snacks", name: "Snacks", image: snacks },
+  {slug: "instant-foods", name: "Instant Foods", image: instant_foods},
   { slug: "frozen-foods", name: "Frozen Foods", image: frozen_foods },
   { slug: "baby-care", name: "Baby Care", image: baby_care },
   { slug: "dairy-eggs", name: "Dairy & Eggs", image: dairy_eggs },

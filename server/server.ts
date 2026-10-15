@@ -1,4 +1,4 @@
-import "dotenv";
+import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import authRouter from "./routes/authRoutes.js";
@@ -12,6 +12,25 @@ import adminRouter from "./routes/adminRoutes.js";
 import dpRouter from "./routes/dpRoutes.js";
 
 const app = express();
+
+// 1. Global request logger — add it here
+app.use((req, res, next) => {
+  console.log("[GLOBAL LOGGER HIT]", req.method, req.originalUrl);
+
+  const startTime = Date.now();
+
+  res.on("finish", () => {
+    console.log(
+      "[REQUEST COMPLETE]",
+      req.method,
+      req.originalUrl,
+      res.statusCode,
+      `${Date.now() - startTime}ms`,
+    );
+  });
+
+  next();
+});
 
 // Middleware
 app.use(cors());

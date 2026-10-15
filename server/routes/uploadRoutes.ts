@@ -15,20 +15,28 @@ uploadRouter.post(
   async (req: Request, res: Response) => {
     try {
       if (!req.file) {
-        return res.status(400).json({ message: "No image file attached" });
+        return res.status(400).json({
+          message: "No image file attached",
+        });
       }
 
       const base64Image = req.file.buffer.toString("base64");
-      const dataURI = "data:" + req.file.mimetype + ";base64" + base64Image;
+
+      // Correct: include a comma after ";base64"
+      const dataURI = `data:${req.file.mimetype};base64,${base64Image}`;
 
       const result = await cloudinary.uploader.upload(dataURI, {
         folder: "Grovia",
         resource_type: "auto",
       });
 
-      res.json({ url: result.secure_url });
+      return res.json({ url: result.secure_url });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      console.error("Image upload failed:", error);
+
+      return res.status(500).json({
+        message: error.message || "Failed to upload image",
+      });
     }
   },
 );

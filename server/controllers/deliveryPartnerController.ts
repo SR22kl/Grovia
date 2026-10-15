@@ -39,7 +39,7 @@ export const loginDeliveryPartner = async (req: Request, res: Response) => {
   const token = generateToken(partner.id);
   const { password: _, ...partnerData } = partner;
 
-  res.json({ partner: partnerData, token });
+  res.status(200).json({ partner: partnerData, token });
 };
 
 // GET assigned deliveries
@@ -48,7 +48,7 @@ export const getMyDeliveries = async (req: Request, res: Response) => {
   const { status } = req.query;
 
   const where: any = {
-    deliveryPartnerId: req.user!.id,
+    deliveryPartnerId: req.partner!.id,
   };
 
   if (status === "active") {
@@ -64,7 +64,7 @@ export const getMyDeliveries = async (req: Request, res: Response) => {
     },
     orderBy: { createdAt: "desc" },
   });
-  res.json({ orders });
+  res.status(200).json({ orders });
 };
 
 // Get single delivery details

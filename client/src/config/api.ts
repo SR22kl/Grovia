@@ -2,9 +2,6 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // Inject JWT token from localStorage into every request if it exists

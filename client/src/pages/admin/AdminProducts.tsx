@@ -9,7 +9,8 @@ import {
 } from "lucide-react";
 import type { Product } from "../../types";
 import Loading from "../../components/Loading";
-import { dummyProducts } from "../../assets/assets";
+import api from "../../config/api";
+import toast from "react-hot-toast";
 
 export default function AdminProducts() {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
@@ -18,11 +19,15 @@ export default function AdminProducts() {
   const [loading, setLoading] = useState(true);
 
   const fetchProducts = async () => {
-    setProducts(dummyProducts);
-
-    setTimeout(() => {
+    try {
+      const { data } = await api.get("/products");
+      setProducts(data.products);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   useEffect(() => {
@@ -37,16 +42,21 @@ export default function AdminProducts() {
     )
       return;
 
-    console.log(id);
+    try {
+      await api.delete(`/products/${id}`);
+      toast.success("Product marked as out of stock!");
+      fetchProducts();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
 
   if (loading) return <Loading />;
 
   return (
     <div className="space-y-6">
-      {/* =========================================================
-          PAGE HEADER
-      ========================================================= */}
+      {/* PAGE HEADER */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/50">
@@ -90,7 +100,7 @@ export default function AdminProducts() {
               w-[65%] skew-x-[-18deg]
               bg-linear-to-r
               from-transparent
-              via-white/[0.08]
+              via-white/8
               to-transparent
               opacity-0
               transition-[left,opacity]
@@ -116,7 +126,7 @@ export default function AdminProducts() {
         "
       >
         {/* Ambient Glow */}
-        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/[0.05] blur-[100px]" />
+        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/5 blur-[100px]" />
 
         {/* Header */}
         <div className="relative z-10 flex items-center justify-between gap-4 border-b border-white/10 px-4 py-5 sm:px-6">
@@ -126,7 +136,7 @@ export default function AdminProducts() {
                 flex size-10 items-center justify-center
                 rounded-xl
                 border border-emerald-400/15
-                bg-emerald-400/[0.06]
+                bg-emerald-400/6
                 text-emerald-300
               "
             >
@@ -147,9 +157,9 @@ export default function AdminProducts() {
 
         {/* Table */}
         <div className="relative z-10 overflow-x-auto no-scrollbar">
-          <table className="w-full min-w-[760px] text-left text-sm">
+          <table className="w-full min-w-190 text-left text-sm">
             <thead>
-              <tr className="border-b border-white/10 bg-white/[0.015] text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
+              <tr className="border-b border-white/10 bg-white/1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
                 <th className="px-6 py-4">Product</th>
                 <th className="px-6 py-4">Price</th>
                 <th className="px-6 py-4">Stock</th>
@@ -157,7 +167,7 @@ export default function AdminProducts() {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-white/[0.06]">
+            <tbody className="divide-y divide-white/6">
               {products.length === 0 ? (
                 <tr>
                   <td
@@ -174,7 +184,7 @@ export default function AdminProducts() {
                     className="
                       group/row
                       transition-colors duration-200
-                      hover:bg-white/[0.025]
+                      hover:bg-white/2.5
                     "
                   >
                     {/* Product */}
@@ -186,7 +196,7 @@ export default function AdminProducts() {
                             overflow-hidden
                             rounded-xl
                             border border-white/10
-                            bg-white/[0.04]
+                            bg-white/4
                           "
                         >
                           <img
@@ -203,7 +213,7 @@ export default function AdminProducts() {
                         </div>
 
                         <div className="min-w-0">
-                          <p className="max-w-[260px] truncate font-semibold text-white/85">
+                          <p className="max-w-65 truncate font-semibold text-white/85">
                             {product.name}
                           </p>
 
@@ -261,7 +271,7 @@ export default function AdminProducts() {
                             text-white/40
                             transition-all duration-300
                             hover:border-emerald-400/20
-                            hover:bg-emerald-400/[0.08]
+                            hover:bg-emerald-400/8
                             hover:text-emerald-300
                           "
                         >
@@ -287,27 +297,6 @@ export default function AdminProducts() {
                         >
                           <XIcon className="size-4" />
                         </button>
-
-                        <Link
-                          to={`/admin/products/${product.id}/edit`}
-                          className="
-                            hidden items-center gap-1
-                            rounded-xl
-                            border border-white/10
-                            bg-white/[0.035]
-                            px-3 py-2
-                            text-xs font-medium
-                            text-white/45
-                            transition-all duration-300
-                            hover:border-white/15
-                            hover:bg-white/[0.06]
-                            hover:text-white/80
-                            xl:flex
-                          "
-                        >
-                          Edit
-                          <ArrowUpRightIcon className="size-3.5" />
-                        </Link>
                       </div>
                     </td>
                   </tr>

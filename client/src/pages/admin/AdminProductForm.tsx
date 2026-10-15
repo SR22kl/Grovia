@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeftIcon,
   PackageIcon,
@@ -7,12 +7,15 @@ import {
   SparklesIcon,
   SaveIcon,
 } from "lucide-react";
-import { categoriesData, dummyProducts } from "../../assets/assets";
+import { categoriesData } from "../../assets/assets";
 import Loading from "../../components/Loading";
+import api from "../../config/api";
+import toast from "react-hot-toast";
 
 export default function AdminProductForm() {
   const { id } = useParams();
   const isEdit = Boolean(id);
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
@@ -32,25 +35,85 @@ export default function AdminProductForm() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (isEdit) {
-        setFormData(() => dummyProducts.find((p) => p.id === id) as any);
+      try {
+        if (isEdit) {
+          const { data: prodData } = await api.get(`/products/${id}`);
+          const p = prodData.product;
+          setFormData({
+            name: p.name,
+            description: p.description,
+            price: p.price.toString(),
+            originalPrice: p.originalPrice ? p.originalPrice.toString() : "",
+            image: p.image,
+            category: p.category,
+            unit: p.unit,
+            stock: p.stock.toString(),
+            isOrganic: p.isOrganic,
+          });
+        }
+      } catch (error: any) {
+        console.error(error);
+        toast.error(error?.response?.data?.message || error?.message);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
-
     fetchData();
   }, [id, isEdit]);
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setSaving(true);
+    try {
+      let finalImageUrl = formData.image;
+
+      if (imageFile) {
+        console.log("Selected file:", imageFile);
+        console.log("File name:", imageFile.name);
+        console.log("File type:", imageFile.type);
+        console.log("File size:", imageFile.size);
+
+        const formDataUpload = new FormData();
+        formDataUpload.append("image", imageFile);
+        console.log("FormData entries:", [...formDataUpload.entries()]);
+        const { data } = await api.post("/upload", formDataUpload);
+        finalImageUrl = data.url;
+      }
+      if (!finalImageUrl) {
+        toast.error("Image is required, please upload an image.");
+        setSaving(false);
+        return;
+      }
+
+      const payload = {
+        ...formData,
+        image: finalImageUrl,
+        price: Number(formData.price),
+        originalPrice: Number(
+          formData.originalPrice ? formData.originalPrice : 0,
+        ),
+        stock: Number(formData.stock),
+      };
+      if (isEdit) {
+        await api.put(`/products/${id}`, payload);
+        toast.success("Product updated successfully!");
+      } else {
+        await api.post("/products", payload);
+        toast.success("Product created successfully!");
+      }
+
+      navigate("/admin/products");
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Failed to save product.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <div className="space-y-6">
-      {/* =========================================================
-          PAGE HEADER
-      ========================================================= */}
+      {/* PAGE HEADER */}
       <div>
         <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/50">
           Inventory
@@ -67,9 +130,7 @@ export default function AdminProductForm() {
         </p>
       </div>
 
-      {/* =========================================================
-          FORM CARD
-      ========================================================= */}
+      {/* FORM CARD  */}
       <section
         className="
           relative isolate overflow-hidden
@@ -81,7 +142,7 @@ export default function AdminProductForm() {
         "
       >
         {/* Ambient Glow */}
-        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/[0.05] blur-[100px]" />
+        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/5 blur-[100px]" />
 
         {/* Header */}
         <div className="relative z-10 flex items-center gap-3 border-b border-white/10 px-4 py-5 sm:px-6">
@@ -95,7 +156,7 @@ export default function AdminProductForm() {
               text-white/45
               transition-all duration-300
               hover:border-emerald-400/20
-              hover:bg-emerald-400/[0.08]
+              hover:bg-emerald-400/8
               hover:text-emerald-300
             "
           >
@@ -107,7 +168,7 @@ export default function AdminProductForm() {
               hidden size-10 items-center justify-center
               rounded-xl
               border border-emerald-400/15
-              bg-emerald-400/[0.06]
+              bg-emerald-400/6
               text-emerald-300
               sm:flex
             "
@@ -178,9 +239,9 @@ export default function AdminProductForm() {
                       placeholder:text-white/20
                       transition-all duration-300
                       focus:border-emerald-400/30
-                      focus:bg-white/[0.04]
+                      focus:bg-white/4
                       focus:ring-2
-                      focus:ring-emerald-400/[0.08]
+                      focus:ring-emerald-400/8
                     "
                   />
                 </div>
@@ -211,7 +272,7 @@ export default function AdminProductForm() {
                       transition-all duration-300
                       focus:border-emerald-400/30
                       focus:ring-2
-                      focus:ring-emerald-400/[0.08]
+                      focus:ring-emerald-400/8
                     "
                   >
                     <option value="" className="bg-[#061f17]">
@@ -258,18 +319,15 @@ export default function AdminProductForm() {
                       placeholder:text-white/20
                       transition-all duration-300
                       focus:border-emerald-400/30
-                      focus:bg-white/[0.04]
+                      focus:bg-white/4
                       focus:ring-2
-                      focus:ring-emerald-400/[0.08]
+                      focus:ring-emerald-400/8
                     "
                   />
                 </div>
               </div>
             </div>
 
-            {/* =====================================================
-                PRICING & INVENTORY
-            ===================================================== */}
             <div className="border-t border-white/[0.07] pt-8">
               <div className="mb-5">
                 <p className="text-sm font-semibold text-white">
@@ -313,7 +371,7 @@ export default function AdminProductForm() {
                       transition-all duration-300
                       focus:border-emerald-400/30
                       focus:ring-2
-                      focus:ring-emerald-400/[0.08]
+                      focus:ring-emerald-400/8
                     "
                   />
                 </div>
@@ -349,7 +407,7 @@ export default function AdminProductForm() {
                       transition-all duration-300
                       focus:border-emerald-400/30
                       focus:ring-2
-                      focus:ring-emerald-400/[0.08]
+                      focus:ring-emerald-400/8
                     "
                   />
                 </div>
@@ -384,7 +442,7 @@ export default function AdminProductForm() {
                       transition-all duration-300
                       focus:border-emerald-400/30
                       focus:ring-2
-                      focus:ring-emerald-400/[0.08]
+                      focus:ring-emerald-400/8
                     "
                   />
                 </div>
@@ -451,11 +509,11 @@ export default function AdminProductForm() {
                     gap-4
                     rounded-2xl
                     border border-dashed border-white/10
-                    bg-white/[0.02]
+                    bg-white/2
                     px-5
                     transition-all duration-300
                     hover:border-emerald-400/20
-                    hover:bg-emerald-400/[0.03]
+                    hover:bg-emerald-400/3
                   "
                 >
                   <div
@@ -463,7 +521,7 @@ export default function AdminProductForm() {
                       flex size-11 shrink-0 items-center justify-center
                       rounded-xl
                       border border-emerald-400/15
-                      bg-emerald-400/[0.06]
+                      bg-emerald-400/6
                       text-emerald-300
                     "
                   >
@@ -490,9 +548,7 @@ export default function AdminProductForm() {
               </div>
             </div>
 
-            {/* =====================================================
-                DESCRIPTION
-            ===================================================== */}
+            {/* DESCRIPTION */}
             <div className="border-t border-white/[0.07] pt-8">
               <div className="mb-5">
                 <p className="text-sm font-semibold text-white">Description</p>
@@ -527,16 +583,14 @@ export default function AdminProductForm() {
                   placeholder:text-white/20
                   transition-all duration-300
                   focus:border-emerald-400/30
-                  focus:bg-white/[0.04]
+                  focus:bg-white/4
                   focus:ring-2
-                  focus:ring-emerald-400/[0.08]
+                  focus:ring-emerald-400/8
                 "
               />
             </div>
 
-            {/* =====================================================
-                ORGANIC
-            ===================================================== */}
+            {/* ORGANIC LABEL */}
             <div className="border-t border-white/[0.07] pt-8">
               <label
                 htmlFor="isOrganic"
@@ -549,11 +603,11 @@ export default function AdminProductForm() {
                   gap-4
                   rounded-2xl
                   border border-white/10
-                  bg-white/[0.02]
+                  bg-white/2
                   p-4
                   transition-all duration-300
                   hover:border-emerald-400/15
-                  hover:bg-emerald-400/[0.03]
+                  hover:bg-emerald-400/3
                 "
               >
                 <div className="flex items-center gap-3">
@@ -562,7 +616,7 @@ export default function AdminProductForm() {
                       flex size-10 items-center justify-center
                       rounded-xl
                       border border-emerald-400/15
-                      bg-emerald-400/[0.06]
+                      bg-emerald-400/6
                       text-emerald-300
                     "
                   >
@@ -595,16 +649,14 @@ export default function AdminProductForm() {
                     cursor-pointer
                     rounded
                     border-white/20
-                    bg-white/[0.05]
+                    bg-white/5
                     accent-emerald-400
                   "
                 />
               </label>
             </div>
 
-            {/* =====================================================
-                ACTIONS
-            ===================================================== */}
+            {/* ACTIONS BUTTONS */}
             <div
               className="
                 flex
@@ -626,13 +678,13 @@ export default function AdminProductForm() {
                   justify-center
                   rounded-xl
                   border border-white/10
-                  bg-white/[0.03]
+                  bg-white/3
                   px-5 py-2.5
                   text-sm font-medium
                   text-white/50
                   transition-all duration-300
                   hover:border-white/15
-                  hover:bg-white/[0.06]
+                  hover:bg-white/6
                   hover:text-white/80
                 "
               >
@@ -684,7 +736,7 @@ export default function AdminProductForm() {
                     skew-x-[-18deg]
                     bg-linear-to-r
                     from-transparent
-                    via-white/[0.08]
+                    via-white/8
                     to-transparent
                     opacity-0
                     transition-[left,opacity]

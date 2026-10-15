@@ -9,7 +9,8 @@ import {
   ActivityIcon,
 } from "lucide-react";
 import Loading from "../../components/Loading";
-import { dummyAdminDashboardData, statusColors } from "../../assets/assets";
+import { statusColors } from "../../assets/assets";
+import api from "../../config/api";
 
 interface Stats {
   totalOrders: number;
@@ -26,11 +27,14 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setStats(dummyAdminDashboardData);
-      setLoading(false);
-    }, 1000);
+    api
+      .get("/admin/stats")
+      .then((res) => setStats(res.data))
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   }, []);
+
+  console.log(stats);
 
   const cards = stats
     ? [
@@ -65,9 +69,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* =========================================================
-          PAGE HEADER
-      ========================================================= */}
+      {/* PAGE HEADER */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/50">
@@ -88,7 +90,7 @@ export default function AdminDashboard() {
             flex w-fit items-center gap-2
             rounded-full
             border border-emerald-400/15
-            bg-emerald-400/[0.06]
+            bg-emerald-400/6
             px-3 py-1.5
             text-xs font-medium
             text-emerald-200/70
@@ -127,7 +129,7 @@ export default function AdminDashboard() {
                 transition-all duration-300
                 hover:-translate-y-1
                 hover:border-white/15
-                hover:bg-white/[0.05]
+                hover:bg-white/5
               "
               style={{
                 animation: `adminCardEnter .5s cubic-bezier(.16,1,.3,1) ${
@@ -136,7 +138,7 @@ export default function AdminDashboard() {
               }}
             >
               {/* Ambient Glow */}
-              <div className="pointer-events-none absolute -right-12 -top-12 size-32 rounded-full bg-emerald-400/[0.06] blur-3xl" />
+              <div className="pointer-events-none absolute -right-12 -top-12 size-32 rounded-full bg-emerald-400/6 blur-3xl" />
 
               {/* Shine */}
               <div
@@ -145,7 +147,7 @@ export default function AdminDashboard() {
                   z-20 w-[65%] skew-x-[-18deg]
                   bg-linear-to-r
                   from-transparent
-                  via-white/[0.06]
+                  via-white/6
                   to-transparent
                   opacity-0
                   transition-[left,opacity]
@@ -198,7 +200,7 @@ export default function AdminDashboard() {
         "
       >
         {/* Header Glow */}
-        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/[0.05] blur-[100px]" />
+        <div className="pointer-events-none absolute -right-32 -top-32 size-64 rounded-full bg-emerald-400/5 blur-[100px]" />
 
         {/* Shine */}
         <div
@@ -207,7 +209,7 @@ export default function AdminDashboard() {
             z-20 w-[45%] skew-x-[-18deg]
             bg-linear-to-r
             from-transparent
-            via-white/[0.04]
+            via-white/4
             to-transparent
             opacity-0
             transition-[left,opacity]
@@ -235,13 +237,13 @@ export default function AdminDashboard() {
               flex w-fit items-center gap-1.5
               rounded-xl
               border border-emerald-400/15
-              bg-emerald-400/[0.06]
+              bg-emerald-400/6
               px-3 py-2
               text-xs font-medium
               text-emerald-200/80
               transition-all duration-300
               hover:border-emerald-400/25
-              hover:bg-emerald-400/[0.10]
+              hover:bg-emerald-400/10
               hover:text-emerald-200
             "
           >
@@ -251,9 +253,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="relative z-10 overflow-x-auto no-scrollbar">
-          <table className="w-full min-w-[760px] text-left text-sm">
+          <table className="w-full min-w-190 text-left text-sm">
             <thead>
-              <tr className="border-b border-white/10 bg-white/[0.015] text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
+              <tr className="border-b border-white/10 bg-white/1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/30">
                 <th className="px-6 py-3.5">Order ID</th>
                 <th className="px-6 py-3.5">Customer</th>
                 <th className="px-6 py-3.5">Items</th>
@@ -263,7 +265,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-white/[0.06]">
+            <tbody className="divide-y divide-white/6">
               {stats?.recentOrders.length === 0 ? (
                 <tr>
                   <td
@@ -280,7 +282,7 @@ export default function AdminDashboard() {
                     className="
                       group/row
                       transition-colors duration-200
-                      hover:bg-white/[0.025]
+                      hover:bg-white/2.5
                     "
                   >
                     <td className="px-6 py-4">
@@ -321,7 +323,7 @@ export default function AdminDashboard() {
                           tracking-wide
                           ${
                             statusColors[order.status] ||
-                            "border-white/10 bg-white/[0.05] text-white/50"
+                            "border-white/10 bg-white/5 text-white/50"
                           }
                         `}
                       >

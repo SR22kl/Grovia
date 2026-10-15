@@ -6,11 +6,14 @@ import {
   PhoneIcon,
   MailIcon,
   UserRoundIcon,
-  ShieldCheckIcon,
+  Car,
+  Scooter,
+  Motorbike,
 } from "lucide-react";
 import type { DeliveryPartner } from "../../types";
 import Loading from "../../components/Loading";
-import { dummyDeliveryPartnerData } from "../../assets/assets";
+import api from "../../config/api";
+import toast from "react-hot-toast";
 
 export default function AdminDeliveryPartners() {
   const [partners, setPartners] = useState<DeliveryPartner[]>([]);
@@ -27,9 +30,15 @@ export default function AdminDeliveryPartners() {
   });
 
   const fetchPartners = async () => {
-    setPartners(dummyDeliveryPartnerData as any);
-
-    setTimeout(() => setLoading(false), 1000);
+    try {
+      const { data } = await api.get("/admin/delivery-partners");
+      setPartners(data?.partners);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -38,19 +47,49 @@ export default function AdminDeliveryPartners() {
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setSaving(true);
+    try {
+      await api.post("/admin/delivery-partners", form);
+      toast.success("Delivery partner onboarded successfully!");
+      setShowForm(false);
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+        vehicleType: "bike",
+      });
+      fetchPartners();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.message || "Failed to onboard delivery partner",
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   const toggleActive = async (id: string, isActive: boolean) => {
-    console.log(id, isActive);
+    try {
+      await api.put(`/admin/delivery-partners/${id}`, { isActive: !isActive });
+      toast.success(
+        `Delivery partner ${
+          !isActive ? "activated" : "deactivated"
+        } successfully!`,
+      );
+      fetchPartners();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
 
   if (loading) return <Loading />;
 
   return (
     <div className="space-y-6">
-      {/* =========================================================
-          PAGE HEADER
-      ========================================================= */}
+      {/* PAGE HEADER */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300/50">
@@ -94,7 +133,7 @@ export default function AdminDeliveryPartners() {
               w-[65%] skew-x-[-18deg]
               bg-linear-to-r
               from-transparent
-              via-white/[0.08]
+              via-white/8
               to-transparent
               opacity-0
               transition-[left,opacity]
@@ -106,9 +145,7 @@ export default function AdminDeliveryPartners() {
         </button>
       </div>
 
-      {/* =========================================================
-          PARTNER GRID
-      ========================================================= */}
+      {/* PARTNERS CARD */}
       {partners.length === 0 ? (
         <section
           className="
@@ -159,7 +196,7 @@ export default function AdminDeliveryPartners() {
                 transition-all duration-300
                 hover:-translate-y-1
                 hover:border-white/15
-                hover:bg-white/[0.05]
+                hover:bg-white/5
               "
               style={{
                 animation: `partnerCardEnter .5s cubic-bezier(.16,1,.3,1) ${
@@ -177,7 +214,7 @@ export default function AdminDeliveryPartners() {
                   z-20 w-[65%] skew-x-[-18deg]
                   bg-linear-to-r
                   from-transparent
-                  via-white/[0.06]
+                  via-white/6
                   to-transparent
                   opacity-0
                   transition-[left,opacity]
@@ -214,9 +251,16 @@ export default function AdminDeliveryPartners() {
                       </p>
 
                       <div className="mt-1 flex items-center gap-1.5 text-xs text-white/30">
-                        <TruckIcon className="size-3" />
+                        {/* Vehicle Type */}
+                        {partner.vehicleType === "bike" ? (
+                          <Motorbike className="size-4" />
+                        ) : partner.vehicleType === "scooter" ? (
+                          <Scooter className="size-4" />
+                        ) : partner.vehicleType === "car" ? (
+                          <Car className="size-4" />
+                        ) : null}
 
-                        <span className="capitalize">
+                        <span className="capitalize text-white/50">
                           {partner.vehicleType}
                         </span>
                       </div>
@@ -278,18 +322,18 @@ export default function AdminDeliveryPartners() {
                       partner.isActive
                         ? `
                           border-red-400/15
-                          bg-red-400/[0.05]
+                          bg-red-400/5
                           text-red-300/80
                           hover:border-red-400/25
-                          hover:bg-red-400/[0.09]
+                          hover:bg-red-400/9
                           hover:text-red-300
                         `
                         : `
                           border-emerald-400/15
-                          bg-emerald-400/[0.05]
+                          bg-emerald-400/5
                           text-emerald-300/80
                           hover:border-emerald-400/25
-                          hover:bg-emerald-400/[0.09]
+                          hover:bg-emerald-400/9
                           hover:text-emerald-300
                         `
                     }
@@ -303,9 +347,7 @@ export default function AdminDeliveryPartners() {
         </div>
       )}
 
-      {/* =========================================================
-          ADD PARTNER MODAL
-      ========================================================= */}
+      {/* ADD PARTNER */}
       {showForm && (
         <>
           {/* Overlay */}
@@ -338,7 +380,7 @@ export default function AdminDeliveryPartners() {
               "
             >
               {/* Glow */}
-              <div className="pointer-events-none absolute -right-24 -top-24 size-48 rounded-full bg-emerald-400/[0.08] blur-3xl" />
+              <div className="pointer-events-none absolute -right-24 -top-24 size-48 rounded-full bg-emerald-400/8 blur-3xl" />
 
               {/* Header */}
               <div className="relative z-10 mb-6 flex items-center justify-between">
@@ -348,7 +390,7 @@ export default function AdminDeliveryPartners() {
                       flex size-10 items-center justify-center
                       rounded-xl
                       border border-emerald-400/15
-                      bg-emerald-400/[0.06]
+                      bg-emerald-400/6
                       text-emerald-300
                     "
                   >
@@ -377,7 +419,7 @@ export default function AdminDeliveryPartners() {
                     text-white/40
                     transition-all duration-300
                     hover:border-white/15
-                    hover:bg-white/[0.06]
+                    hover:bg-white/6
                     hover:text-white
                   "
                 >
@@ -415,9 +457,9 @@ export default function AdminDeliveryPartners() {
                       placeholder:text-white/20
                       transition-all duration-300
                       focus:border-emerald-400/30
-                      focus:bg-white/[0.04]
+                      focus:bg-white/4
                       focus:ring-2
-                      focus:ring-emerald-400/[0.08]
+                      focus:ring-emerald-400/8
                     "
                   />
                 </div>
@@ -451,9 +493,9 @@ export default function AdminDeliveryPartners() {
                         placeholder:text-white/20
                         transition-all duration-300
                         focus:border-emerald-400/30
-                        focus:bg-white/[0.04]
+                        focus:bg-white/4
                         focus:ring-2
-                        focus:ring-emerald-400/[0.08]
+                        focus:ring-emerald-400/8
                       "
                     />
                   </div>
@@ -486,9 +528,9 @@ export default function AdminDeliveryPartners() {
                         placeholder:text-white/20
                         transition-all duration-300
                         focus:border-emerald-400/30
-                        focus:bg-white/[0.04]
+                        focus:bg-white/4
                         focus:ring-2
-                        focus:ring-emerald-400/[0.08]
+                        focus:ring-emerald-400/8
                       "
                     />
                   </div>
@@ -523,9 +565,9 @@ export default function AdminDeliveryPartners() {
                         placeholder:text-white/20
                         transition-all duration-300
                         focus:border-emerald-400/30
-                        focus:bg-white/[0.04]
+                        focus:bg-white/4
                         focus:ring-2
-                        focus:ring-emerald-400/[0.08]
+                        focus:ring-emerald-400/8
                       "
                     />
                   </div>
@@ -554,7 +596,7 @@ export default function AdminDeliveryPartners() {
                         transition-all duration-300
                         focus:border-emerald-400/30
                         focus:ring-2
-                        focus:ring-emerald-400/[0.08]
+                        focus:ring-emerald-400/8
                       "
                     >
                       <option value="bike" className="bg-[#061f17]">
@@ -609,7 +651,7 @@ export default function AdminDeliveryPartners() {
                     skew-x-[-18deg]
                     bg-linear-to-r
                     from-transparent
-                    via-white/[0.08]
+                    via-white/8
                     to-transparent
                     opacity-0
                     transition-[left,opacity]

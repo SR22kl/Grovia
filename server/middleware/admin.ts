@@ -11,7 +11,9 @@ const admin = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
+      select: { id: true, email: true },
     });
+
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -23,16 +25,20 @@ const admin = async (req: Request, res: Response, next: NextFunction) => {
       : [];
 
     if (!adminEmails.includes(user.email.toLowerCase())) {
-      if (req.user) req.user.isAdmin = true;
-      next();
-    } else {
       return res.status(403).json({ message: "Admin access required" });
     }
-  } catch (error: any) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ message: "Admin verification failed", error: error.message });
+
+    if (req.user) {
+      req.user.isAdmin = true;
+    }
+
+    return next();
+  } catch (error: unknown) {
+    console.error("Admin verification failed:", error);
+
+    return res.status(500).json({
+      message: "Admin verification failed",
+    });
   }
 };
 
