@@ -33,9 +33,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Stripe Webhook
+// Stripe 
 app.post(
-  "api/stripe",
+  "/api/stripe",
   express.raw({ type: "application/json" }),
   stripeWebhook,
 );
