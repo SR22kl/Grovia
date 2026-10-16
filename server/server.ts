@@ -10,6 +10,7 @@ import { inngest, functions } from "./inngest/index.js";
 import addressRouter from "./routes/addressRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import dpRouter from "./routes/dpRoutes.js";
+import { stripeWebhook } from "./controllers/webhooks.js";
 
 const app = express();
 
@@ -31,6 +32,13 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Stripe Webhook
+app.post(
+  "api/stripe",
+  express.raw({ type: "application/json" }),
+  stripeWebhook,
+);
 
 // Middleware
 app.use(cors());

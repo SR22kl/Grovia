@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CheckCircle2,
   MapPin,
@@ -42,6 +42,7 @@ export default function DeliveryDashboard() {
   // Cancel modal
   const [cancelModal, setCancelModal] = useState<string | null>(null);
   const [cancelReason, setCancelReason] = useState("");
+  const watchIdRef = useRef<number | null>(null);
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -65,39 +66,121 @@ export default function DeliveryDashboard() {
     fetchOrders();
   }, [tab]);
 
+  // Send location every 10s for active deliveries
+  useEffect(() => {
+    const activeOrders = orders.filter((o) =>
+      ["Assigned", "Packed", "Out for Delivery"].includes(o.status),
+    );
+
+    if (activeOrders.length === 0 || !tracking) {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+      return;
+    }
+
+    const sendLocation = (pos: GeolocationPosition) => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      activeOrders.forEach(async (order) => {
+        axios
+          .put(
+            `${API_URL}/delivery/my-deliveries/${order.id}/location`,
+            { lat, lng },
+            getAuthHeaders(),
+          )
+          .catch((error: any) => {
+            console.log(error);
+          });
+      });
+    };
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      sendLocation,
+      () => {},
+      {
+        enableHighAccuracy: true,
+        maximumAge: 10000,
+      },
+    );
+
+    // Also send on interval for more consistent updates
+    const interval = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(sendLocation, () => {}, {
+        enableHighAccuracy: true,
+      });
+    }, 10000);
+
+    return () => {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+      clearInterval(interval);
+    };
+  }, [orders, tracking]);
+
   const handleUpdateStatus = async (orderId: string, status: string) => {
-    console.log(orderId, status);
+    try {
+      await axios.put(
+        `${API_URL}/delivery/my-deliveries/${orderId}/status`,
+        { status },
+        getAuthHeaders(),
+      );
+      toast.success(`Status updated to ${status}`);
+      fetchOrders();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Failed");
+    }
   };
 
   const handleComplete = async () => {
     if (!otpModal || !otp) return;
-
     setSubmitting(true);
 
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await axios.put(
+        `${API_URL}/delivery/my-deliveries/${otpModal}/complete`,
+        { otp },
+        getAuthHeaders(),
+      );
+      toast.success("Delivery completed!");
       setOtpModal(null);
       setOtp("");
-    }, 1000);
+      fetchOrders();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleCancel = async () => {
     if (!cancelModal) return;
-
     setSubmitting(true);
 
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      axios.put(
+        `${API_URL}/delivery/my-deliveries/${cancelModal}/cancel`,
+        { reason: cancelReason },
+        getAuthHeaders(),
+      );
+      toast.success("Delivery cancelled!");
       setCancelModal(null);
       setCancelReason("");
-    }, 1000);
+      fetchOrders();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="space-y-6">
-      {/* -------------------------------------------------
-          PAGE HEADER
-      -------------------------------------------------- */}
+      {/* PAGE HEADER */}
       <section className="animate-[fadeUp_.45s_ease-out]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -141,9 +224,7 @@ export default function DeliveryDashboard() {
         </div>
       </section>
 
-      {/* -------------------------------------------------
-          FILTERS / LOCATION
-      -------------------------------------------------- */}
+      {/* FILTERS / LOCATION */}
       <section className="flex flex-col gap-3 sm:flex-row sm:items-center">
         {/* Tabs */}
         <div className="flex w-fit rounded-2xl border border-white/10 bg-white/5 p-1 backdrop-blur-xl">
@@ -208,9 +289,7 @@ export default function DeliveryDashboard() {
         </button>
       </section>
 
-      {/* -------------------------------------------------
-          LOCATION SHARING PANEL
-      -------------------------------------------------- */}
+      {/* LOCATION SHARING PANEL */}
       {tracking && (
         <div className="animate-[fadeDown_.3s_ease-out] overflow-hidden rounded-2xl border border-emerald-400/15 bg-emerald-400/6 backdrop-blur-xl">
           <div className="flex items-center gap-3 px-4 py-4">
@@ -234,9 +313,7 @@ export default function DeliveryDashboard() {
         </div>
       )}
 
-      {/* -------------------------------------------------
-          ORDERS
-      -------------------------------------------------- */}
+      {/* ORDERS */}
       {loading ? (
         <div className="flex min-h-80 items-center justify-center rounded-3xl border border-white/10 bg-white/4 backdrop-blur-xl">
           <Loading />
