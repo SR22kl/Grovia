@@ -5,7 +5,6 @@ import {
   EditIcon,
   XIcon,
   PackageIcon,
-  ArrowUpRightIcon,
 } from "lucide-react";
 import type { Product } from "../../types";
 import Loading from "../../components/Loading";

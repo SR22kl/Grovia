@@ -33,7 +33,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Stripe 
+// Stripe
 app.post(
   "/api/stripe",
   express.raw({ type: "application/json" }),

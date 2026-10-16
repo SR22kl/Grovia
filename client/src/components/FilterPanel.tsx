@@ -3,7 +3,7 @@ import { ListFilterIcon, SlidersHorizontal } from "lucide-react";
 const FilterPanel = ({
   categories,
   category,
-  organic,
+  // organic,
   minPrice,
   maxPrice,
   updateFilter,
@@ -19,9 +19,7 @@ const FilterPanel = ({
 
   return (
     <div className="relative overflow-hidden rounded-[1.4rem] bg-[#061f17]/70 p-4 backdrop-blur-2xl sm:p-5">
-      {/* =========================================================
-          PANEL AMBIENCE
-      ========================================================= */}
+      {/* PANEL AMBIENCE */}
 
       <div
         className="
@@ -45,15 +43,8 @@ const FilterPanel = ({
         "
       />
 
-      {/* =========================================================
-          CONTENT
-      ========================================================= */}
-
       <div className="relative z-10 space-y-6">
-        {/* =======================================================
-            FILTER HEADER
-        ======================================================= */}
-
+        {/* FILTER HEADER */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div
