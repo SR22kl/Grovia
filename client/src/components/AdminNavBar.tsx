@@ -2,7 +2,6 @@ import {
   BikeIcon,
   LayoutDashboardIcon,
   LogOutIcon,
-  ShieldCheckIcon,
   UserCircleIcon,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -34,7 +33,7 @@ const AdminNavBar = () => {
             z-20 w-[45%] skew-x-[-18deg]
             bg-linear-to-r
             from-transparent
-            via-white/[0.06]
+            via-white/6
             to-transparent
             opacity-0
             transition-[left,opacity]
@@ -118,7 +117,7 @@ const AdminNavBar = () => {
               hidden items-center gap-2
               rounded-full
               border border-emerald-400/15
-              bg-emerald-400/[0.06]
+              bg-emerald-400/6
               px-3 py-1.5
               md:flex
             "
@@ -149,7 +148,7 @@ const AdminNavBar = () => {
                 text-white/55
                 transition-all duration-300
                 hover:border-emerald-400/20
-                hover:bg-emerald-400/[0.08]
+                hover:bg-emerald-400/8
                 hover:text-emerald-200
                 sm:flex
               "
@@ -170,7 +169,7 @@ const AdminNavBar = () => {
                 text-white/70
                 transition-all duration-300
                 hover:border-white/15
-                hover:bg-white/[0.06]
+                hover:bg-white/6
                 hover:text-white
               "
             >
@@ -188,11 +187,11 @@ const AdminNavBar = () => {
                 flex size-9 items-center justify-center
                 rounded-xl
                 border border-orange-400/10
-                bg-orange-400/[0.05]
+                bg-orange-400/5
                 text-orange-200/70
                 transition-all duration-300
                 hover:border-orange-400/20
-                hover:bg-orange-400/[0.10]
+                hover:bg-orange-400/10
                 hover:text-orange-200
               "
             >
