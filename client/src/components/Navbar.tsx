@@ -107,6 +107,8 @@ const Navbar = () => {
 
           {/* NAV CONTENT */}
 
+          
+
           <div className="relative z-10 flex h-17 items-center gap-3 px-3 sm:px-5 lg:px-6">
             {/* Logo */}
 

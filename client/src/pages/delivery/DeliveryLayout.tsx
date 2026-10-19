@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { CircleUserRound, LogOut, Truck, Wifi } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { DeliveryPartner } from "../../types";
@@ -14,7 +14,7 @@ export default function DeliveryLayout() {
     if (!saved || !token) {
       navigate("/delivery/login");
       return;
-    } 
+    }
     setPartner(JSON.parse(saved));
   }, [navigate]);
 
@@ -53,15 +53,57 @@ export default function DeliveryLayout() {
       <header className="sticky top-0 z-40 border-b border-white/8 bg-[#031c14]/70 backdrop-blur-2xl">
         <div className="mx-auto flex h-17 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="relative flex size-10 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/10 shadow-lg shadow-emerald-950/20">
-              <Truck className="size-5 text-emerald-300" />
+          <Link
+            to="/delivery"
+            className="
+                group/logo
+                flex shrink-0
+                items-center gap-2.5
+                rounded-xl
+                px-1.5 py-1
+                transition-all duration-300
+              "
+          >
+            <div
+              className="
+                  relative flex size-10
+                  items-center justify-center
+                  overflow-hidden
+                  rounded-xl
+                  border border-emerald-400/20
+                  bg-emerald-400/8
+                  shadow-lg shadow-emerald-950/10
+                  transition-all duration-300
+                  group-hover/logo:scale-105
+                  group-hover/logo:border-emerald-400/35
+                  group-hover/logo:bg-emerald-400/13
+                "
+            >
+              <Truck
+                className="
+                    size-6
+                    text-emerald-300
+                    transition-transform
+                    duration-500
+                    group-hover/logo:translate-x-0.5
+                    group-hover/logo:rotate-[-4deg]
+                  "
+              />
 
-              {/* Online indicator */}
-              <span className="absolute -right-0.5 -top-0.5 flex size-3">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-50" />
-                <span className="relative inline-flex size-3 rounded-full border-2 border-[#031c14] bg-emerald-400" />
-              </span>
+              <span
+                className="
+                    pointer-events-none absolute
+                    inset-y-0 -left-full
+                    w-1/2
+                    skew-x-[-18deg]
+                    bg-linear-to-r
+                    from-transparent
+                    via-white/15
+                    to-transparent
+                    transition-all duration-700
+                    group-hover/logo:left-[150%]
+                  "
+              />
             </div>
 
             <div>
@@ -77,7 +119,7 @@ export default function DeliveryLayout() {
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
 
           {/* Partner */}
           <div className="flex items-center gap-3">

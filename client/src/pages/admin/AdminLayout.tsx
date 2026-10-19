@@ -130,16 +130,11 @@ export default function AdminLayout() {
         <div className="absolute inset-x-0 top-0 h-72 bg-linear-to-b from-white/[0.035] via-transparent to-transparent" />
       </div>
 
-      {/* =========================================================
-          ADMIN NAVBAR
-      ========================================================= */}
+      {/* ADMIN NAVBAR */}
       <section className="relative z-30 px-3 pt-3 sm:px-5 lg:px-6">
         <AdminNavBar />
       </section>
 
-      {/* =========================================================
-          ADMIN WORKSPACE
-      ========================================================= */}
       <div
         className="
           relative z-10

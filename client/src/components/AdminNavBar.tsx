@@ -1,10 +1,11 @@
 import {
+  BikeIcon,
   LayoutDashboardIcon,
   LogOutIcon,
   ShieldCheckIcon,
   UserCircleIcon,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminNavBar = () => {
   const navigate = useNavigate();
@@ -52,31 +53,63 @@ const AdminNavBar = () => {
             className="group/brand flex items-center gap-3"
           >
             {/* Logo */}
-            <div
+            <Link
+              to="/"
               className="
-                flex size-10 items-center justify-center
+                group/logo
+                flex shrink-0
+                items-center gap-2.5
                 rounded-xl
-                border border-emerald-400/20
-                bg-emerald-400/10
-                text-emerald-300
-                shadow-[0_0_25px_rgba(52,211,153,0.08)]
+                px-1.5 py-1
                 transition-all duration-300
-                group-hover/brand:border-emerald-300/30
-                group-hover/brand:bg-emerald-400/[0.14]
-                group-hover/brand:shadow-[0_0_30px_rgba(52,211,153,0.12)]
               "
             >
-              <ShieldCheckIcon className="size-5" />
-            </div>
+              <div
+                className="
+                  relative flex size-9
+                  items-center justify-center
+                  overflow-hidden
+                  rounded-xl
+                  border border-emerald-400/20
+                  bg-emerald-400/8
+                  shadow-lg shadow-emerald-950/10
+                  transition-all duration-300
+                  group-hover/logo:scale-105
+                  group-hover/logo:border-emerald-400/35
+                  group-hover/logo:bg-emerald-400/13
+                "
+              >
+                <BikeIcon
+                  className="
+                    size-5
+                    text-emerald-300
+                    transition-transform
+                    duration-500
+                    group-hover/logo:translate-x-0.5
+                    group-hover/logo:rotate-[-4deg]
+                  "
+                />
 
-            {/* Brand Text */}
-            <div className="hidden sm:block">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-300/60">
+                <span
+                  className="
+                    pointer-events-none absolute
+                    inset-y-0 -left-full
+                    w-1/2
+                    skew-x-[-18deg]
+                    bg-linear-to-r
+                    from-transparent
+                    via-white/15
+                    to-transparent
+                    transition-all duration-700
+                    group-hover/logo:left-[150%]
+                  "
+                />
+              </div>
+
+              <span className="text-[20px] font-bold tracking-tight text-white">
                 Grovia
-              </p>
-
-              <p className="text-sm font-semibold text-white">Admin Panel</p>
-            </div>
+              </span>
+            </Link>
           </button>
 
           {/* Center Status */}
