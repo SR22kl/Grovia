@@ -15,7 +15,7 @@ productRouter.get("/flash-deals", getFlashDeals);
 productRouter.get("/", getProducts);
 productRouter.get("/:id", getProduct);
 productRouter.post("/", auth, createProduct);
-productRouter.put("/:id", updateProduct);
-productRouter.delete("/:id", deleteProduct);
+productRouter.put("/:id", auth, updateProduct);
+productRouter.delete("/:id", auth, deleteProduct);
 
 export default productRouter;

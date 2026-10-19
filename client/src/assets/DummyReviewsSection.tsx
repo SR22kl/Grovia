@@ -397,9 +397,7 @@ export default function DummyReviewsSection({ product }: { product: Product }) {
             </div>
           </div>
 
-          {/* =================================================
-              REVIEWS
-          ================================================= */}
+           {/* REVIEWS */}
           <div className="mt-7">
             <div className="mb-5 flex items-center justify-between">
               <div>

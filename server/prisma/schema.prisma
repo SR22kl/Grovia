@@ -16,6 +16,7 @@ model User {
   avatar    String?   @default("")
   addresses Address[]
   orders    Order[]
+  reviews   Review[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -49,8 +50,26 @@ model Product {
   isOrganic     Boolean? @default(false)
   rating        Float?   @default(0)
   reviewCount   Int?     @default(0)
+  reviews       Review[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String   @db.Text
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One review per user for each product
+  @@unique([productId, userId])
+  @@index([productId, createdAt])
+  @@index([productId, rating])
 }
 
 model Order {

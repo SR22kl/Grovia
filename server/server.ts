@@ -11,6 +11,7 @@ import addressRouter from "./routes/addressRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import dpRouter from "./routes/dpRoutes.js";
 import { stripeWebhook } from "./controllers/webhooks.js";
+import reviewRouter from "./routes/reviewRoutes.js";
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // Routes
 app.use("/api/auth", authRouter);
+app.use("/api/products", reviewRouter)
 app.use("/api/products", productRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/orders", orderRouter);

@@ -40,10 +40,7 @@ const ProductCard = ({ product }: Props) => {
         hover:shadow-black/25
       "
     >
-      {/* =========================================================
-          GLASS SHINE
-      ========================================================= */}
-
+       {/* GLASS SHINE */}
       <div
         className="
           pointer-events-none
@@ -67,11 +64,6 @@ const ProductCard = ({ product }: Props) => {
           group-hover:opacity-100
         "
       />
-
-      {/* =========================================================
-          IMAGE AREA
-      ========================================================= */}
-
       <div
         className="
           relative
@@ -119,10 +111,7 @@ const ProductCard = ({ product }: Props) => {
           "
         />
 
-        {/* =======================================================
-            DISCOUNT BADGE
-        ======================================================= */}
-
+        {/* DISCOUNT BADGE */}
         {product.discount > 0 && (
           <span
             className="
@@ -146,10 +135,7 @@ const ProductCard = ({ product }: Props) => {
           </span>
         )}
 
-        {/* =======================================================
-            ADD TO CART
-        ======================================================= */}
-
+        {/* ADD TO CART */}
         <button
           type="button"
           aria-label={`Add ${product.name} to cart`}
@@ -194,10 +180,7 @@ const ProductCard = ({ product }: Props) => {
         </button>
       </div>
 
-      {/* =========================================================
-          PRODUCT CONTENT
-      ========================================================= */}
-
+      {/* PRODUCT CONTENT */}
       <div className="relative z-10 flex flex-1 flex-col p-3.5">
         {/* Product name */}
         <h3
@@ -216,10 +199,7 @@ const ProductCard = ({ product }: Props) => {
           {product?.name}
         </h3>
 
-        {/* =======================================================
-            RATING
-        ======================================================= */}
-
+        {/* RATING */}
         {product?.rating > 0 && (
           <div className="mt-2 flex items-center gap-1.5">
             <div
@@ -243,10 +223,7 @@ const ProductCard = ({ product }: Props) => {
           </div>
         )}
 
-        {/* =======================================================
-            PRICE
-        ======================================================= */}
-
+        {/* PRICE */}
         <div className="mt-auto pt-3">
           <div className="flex min-w-0 items-end justify-between gap-2">
             <div className="min-w-0">
@@ -294,10 +271,6 @@ const ProductCard = ({ product }: Props) => {
           </div>
         </div>
       </div>
-
-      {/* =========================================================
-          BOTTOM EDGE HIGHLIGHT
-      ========================================================= */}
 
       <div
         className="

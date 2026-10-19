@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  PlusIcon,
-  EditIcon,
-  XIcon,
-  PackageIcon,
-} from "lucide-react";
+import { PlusIcon, EditIcon, XIcon, Trash2, PackageIcon } from "lucide-react";
 import type { Product } from "../../types";
 import Loading from "../../components/Loading";
 import api from "../../config/api";
@@ -48,6 +43,33 @@ export default function AdminProducts() {
     } catch (error: any) {
       console.log(error);
       toast.error(error?.response?.data?.message || error?.message);
+    }
+  };
+
+  const handleDeleteProduct = async (id: string, name: string) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to permanently delete "${name}"? This action cannot be undone.`,
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await api.delete(`/products/${id}`);
+
+      toast.success("Product deleted successfully!");
+
+      setProducts((currentProducts) =>
+        currentProducts.filter((product) => product.id !== id),
+      );
+    } catch (error: any) {
+      console.error(error);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to delete product.",
+      );
     }
   };
 
@@ -111,9 +133,7 @@ export default function AdminProducts() {
         </Link>
       </div>
 
-      {/* =========================================================
-          PRODUCTS TABLE
-      ========================================================= */}
+      {/* PRODUCTS TABLE */}
       <section
         className="
           group relative isolate overflow-hidden
@@ -295,6 +315,27 @@ export default function AdminProducts() {
                           "
                         >
                           <XIcon className="size-4" />
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            handleDeleteProduct(product.id, product.name)
+                          }
+                          title="Delete Product"
+                          aria-label={`Delete ${product.name}`}
+                          className="
+                            flex size-9 items-center justify-center
+                            rounded-xl
+                            border border-white/10
+                            bg-white/[0.035]
+                            text-white/40
+                            transition-all duration-300
+                            hover:border-red-400/30
+                            hover:bg-red-400/10
+                            hover:text-red-300
+                          "
+                        >
+                          <Trash2 className="size-4" />
                         </button>
                       </div>
                     </td>

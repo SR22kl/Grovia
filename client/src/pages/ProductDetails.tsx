@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import type { Product } from "../types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import {
   ArrowLeft,
@@ -20,6 +20,7 @@ import DummyReviewsSection from "../assets/DummyReviewsSection";
 import ProductCard from "../components/ProductCard";
 import Navbar from "../components/Navbar";
 import api from "../config/api";
+import UserReviews from "../components/UserReviews";
 
 const ProductDetails = () => {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
@@ -72,6 +73,21 @@ const ProductDetails = () => {
 
     fetchProduct();
   }, [id, navigate]);
+
+  const handleReviewSummaryChange = useCallback(
+    (summary: { rating: number; reviewCount: number }) => {
+      setProduct((current) =>
+        current
+          ? {
+              ...current,
+              rating: summary.rating,
+              reviewCount: summary.reviewCount,
+            }
+          : current,
+      );
+    },
+    [],
+  );
 
   if (loading) {
     return <Loading />;
@@ -959,18 +975,13 @@ const ProductDetails = () => {
           </div>
         </section>
 
-        {/* =======================================================
-            CUSTOMER REVIEWS
-        ======================================================= */}
-        {product.reviewCount > 0 && (
-          <section className="mt-14">
-            <DummyReviewsSection product={product} />
-          </section>
-        )}
+        {/* CUSTOMER REVIEWS */}
+        <UserReviews
+          productId={product.id}
+          onSummaryChange={handleReviewSummaryChange}
+        />
 
-        {/* =======================================================
-            RELATED PRODUCTS
-        ======================================================= */}
+        {/* RELATED PRODUCTS */}
         {relatedProducts.length > 0 && (
           <section className="mb-20 mt-16">
             {/* Section heading */}
@@ -1060,9 +1071,8 @@ const ProductDetails = () => {
           </section>
         )}
       </main>
-      {/* =========================================================
-          PAGE ANIMATIONS
-      ========================================================= */}
+
+      {/* ANIMATIONS */}
       <style>{`
         @keyframes productPageReveal {
           from {
