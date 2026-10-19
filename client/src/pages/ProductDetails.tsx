@@ -16,7 +16,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import StarRating from "../components/StarRating";
-import DummyReviewsSection from "../assets/DummyReviewsSection";
 import ProductCard from "../components/ProductCard";
 import Navbar from "../components/Navbar";
 import api from "../config/api";
